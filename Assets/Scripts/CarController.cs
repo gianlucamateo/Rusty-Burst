@@ -6,9 +6,6 @@ public class CarController : MonoBehaviour {
 	public List<AxleInfo> axleInfos; // the information about each individual axle
 	public float maxMotorTorque; // maximum torque the motor can apply to wheel
 	public float maxSteeringAngle; // maximum steer angle the wheel can have
-	public float df, dfScale = 10;
-
-	public Rigidbody Rb;
 
 
 	public void Start(){
@@ -27,12 +24,11 @@ public class CarController : MonoBehaviour {
 				axleInfo.rightWheel.steerAngle = steering;
 			}
 			if (axleInfo.motor) {
-				axleInfo.leftWheel.motorTorque = motor;
-				axleInfo.rightWheel.motorTorque = motor;
+				axleInfo.leftWheel.motorTorque = motor * axleInfo.motorScale;
+				axleInfo.rightWheel.motorTorque = motor* axleInfo.motorScale;
 			}
 		}
-		df = Mathf.Pow (Rb.velocity.magnitude, 2) * dfScale;
-		Rb.AddForce (0, -df, 0);
+
 	}
 }
 
@@ -42,4 +38,5 @@ public class AxleInfo {
 	public WheelCollider rightWheel;
 	public bool motor; // is this wheel attached to motor?
 	public bool steering; // does this wheel apply steer angle?
+	public float motorScale;
 }
