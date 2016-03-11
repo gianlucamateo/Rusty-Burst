@@ -1,0 +1,23 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{506D0E25-4ED3-5A89-1F14-4D6AE072B522}") = "Strawberry-Firecracker", "Assembly-CSharp.csproj", "{92530812-3C0B-77C2-65A3-6D777EE4B0CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92530812-3C0B-77C2-65A3-6D777EE4B0CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92530812-3C0B-77C2-65A3-6D777EE4B0CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92530812-3C0B-77C2-65A3-6D777EE4B0CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92530812-3C0B-77C2-65A3-6D777EE4B0CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
