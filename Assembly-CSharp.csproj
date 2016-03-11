@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\CarController.cs" />
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
      <Compile Include="Assets\Scripts\PowerTest.cs" />
+     <Compile Include="Assets\Scripts\WheelTurnScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
