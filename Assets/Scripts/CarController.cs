@@ -9,7 +9,7 @@ public class CarController : MonoBehaviour {
 
 
 	public void Start(){
-		axleInfos[0].leftWheel.gameObject.GetComponent<WheelCollider>().ConfigureVehicleSubsteps(5f, 20, 10);
+		axleInfos[0].leftWheel.gameObject.GetComponent<WheelCollider>().ConfigureVehicleSubsteps(5f, 50, 50);
 	}
 
 
