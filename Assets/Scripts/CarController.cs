@@ -15,7 +15,7 @@ public class CarController : MonoBehaviour {
 
 	public void FixedUpdate()
 	{
-		float motor = maxMotorTorque * Input.GetAxis("Vertical");
+		float motor = maxMotorTorque * Input.GetAxis("Triggers");
 		float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
 
 		foreach (AxleInfo axleInfo in axleInfos) {
@@ -24,8 +24,18 @@ public class CarController : MonoBehaviour {
 				axleInfo.rightWheel.steerAngle = steering;
 			}
 			if (axleInfo.motor) {
-				axleInfo.leftWheel.motorTorque = motor * axleInfo.motorScale;
-				axleInfo.rightWheel.motorTorque = motor* axleInfo.motorScale;
+				if (motor > 30) {
+					axleInfo.leftWheel.brakeTorque = motor * axleInfo.motorScale ;
+					axleInfo.rightWheel.brakeTorque = motor * axleInfo.motorScale ;
+					axleInfo.leftWheel.motorTorque = 0;
+					axleInfo.rightWheel.motorTorque = 0;
+				} else {
+					axleInfo.leftWheel.brakeTorque = 0;
+					axleInfo.rightWheel.brakeTorque = 0;
+					axleInfo.leftWheel.motorTorque = -motor * axleInfo.motorScale;
+					axleInfo.rightWheel.motorTorque = -motor* axleInfo.motorScale;
+				}
+
 			}
 		}
 
