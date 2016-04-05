@@ -25,8 +25,8 @@ public class CarController : MonoBehaviour {
 			}
 			if (axleInfo.motor) {
 				if (motor > 30) {
-					axleInfo.leftWheel.brakeTorque = motor * axleInfo.motorScale ;
-					axleInfo.rightWheel.brakeTorque = motor * axleInfo.motorScale ;
+					axleInfo.leftWheel.brakeTorque = motor * axleInfo.brakeScale ;
+					axleInfo.rightWheel.brakeTorque = motor * axleInfo.brakeScale ;
 					axleInfo.leftWheel.motorTorque = 0;
 					axleInfo.rightWheel.motorTorque = 0;
 				} else {
@@ -49,4 +49,5 @@ public class AxleInfo {
 	public bool motor; // is this wheel attached to motor?
 	public bool steering; // does this wheel apply steer angle?
 	public float motorScale;
+	public float brakeScale;
 }
