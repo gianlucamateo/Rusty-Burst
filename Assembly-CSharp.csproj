@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
      <Compile Include="Assets\Scripts\PowerTest.cs" />
      <Compile Include="Assets\Scripts\WheelTurnScript.cs" />
+     <Compile Include="Assets\TachoScript.cs" />
      <None Include="Assets\sky5X\README.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>E:/unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

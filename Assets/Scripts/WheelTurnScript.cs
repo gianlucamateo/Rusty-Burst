@@ -9,6 +9,7 @@ public class WheelTurnScript : MonoBehaviour {
 	public float speed;
 	public float slip;
 	public GameObject centerMarker;
+	public float vertCorr;
 	// Use this for initialization
 	void Start () {
 		
@@ -26,7 +27,10 @@ public class WheelTurnScript : MonoBehaviour {
 		Quaternion empty = new Quaternion();
 		//transform.Rotate(new Vector3 (0, speed, 0));
 		wCollider.GetWorldPose(out center, out empty);
+
 		center.y -= centerMarker.transform.position.y;
+		center.y = Mathf.Min (center.y, -0.55f);
+		vertCorr = center.y;
 
 		WheelHit hit;
 		wCollider.GetGroundHit (out hit);
