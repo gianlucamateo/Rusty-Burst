@@ -22,6 +22,6 @@ public class DownforceScript : MonoBehaviour {
 			df = 0;
 		}
 
-		Rb.AddForce (0, -df, 0);
+		Rb.AddRelativeForce (0, -df, 0);
 	}
 }
