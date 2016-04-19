@@ -10,6 +10,14 @@ public class CarController : MonoBehaviour {
 	public Rigidbody chassis;
 	public AudioSource carAudio;
 	public float input;
+	private int lastSkidRearLeft = -1;
+	private int lastSkidFrontLeft = -1;
+	private int lastSkidRearRight = -1;
+	private int lastSkidFrontRight = -1;
+	public Skidmarks skidmarks;
+	public Vector3 worldPose;
+	private float slip;
+	public float skidSlip;
 
 	public void Start(){
 		axleInfos[0].leftWheel.gameObject.GetComponent<WheelCollider>().ConfigureVehicleSubsteps(5f, 50, 50);
@@ -41,6 +49,9 @@ public class CarController : MonoBehaviour {
 				}
 
 			}
+
+			checkSkids (axleInfo);
+
 		}
 
 		float kmhSpeed = chassis.velocity.magnitude * 3.6f;
@@ -50,6 +61,45 @@ public class CarController : MonoBehaviour {
 		carAudio.pitch = 2*ratio + 0.1f;
 
 		chassis.drag = ratio * ratio * 0.3f;
+
+	}
+	private void checkSkids(AxleInfo axleInfo){
+		worldPose = new Vector3 ();
+		Quaternion quat = new Quaternion ();
+		axleInfo.leftWheel.GetWorldPose (out worldPose, out quat);
+		worldPose.y -= 0.35f;
+		WheelHit wh;
+		axleInfo.leftWheel.GetGroundHit (out wh);
+		slip = Mathf.Abs (wh.forwardSlip) + Mathf.Abs (wh.sidewaysSlip);
+		if (axleInfos.IndexOf (axleInfo) == 0) {
+			if (slip > skidSlip)
+				lastSkidFrontLeft = skidmarks.AddSkidMark (worldPose, Vector3.up, slip, lastSkidFrontLeft);
+			else
+				lastSkidFrontLeft = -1;
+		}
+		else {
+			if (slip > skidSlip) 
+				lastSkidRearLeft = skidmarks.AddSkidMark (worldPose, Vector3.up, slip, lastSkidRearLeft);
+			else
+				lastSkidRearLeft = -1;
+		}
+
+		axleInfo.rightWheel.GetWorldPose (out worldPose, out quat);
+		worldPose.y -= 0.35f;
+		axleInfo.rightWheel.GetGroundHit (out wh);
+		slip = Mathf.Abs (wh.forwardSlip) + Mathf.Abs (wh.sidewaysSlip);
+		if (axleInfos.IndexOf (axleInfo) == 0) {
+			if (slip > skidSlip)
+				lastSkidFrontRight = skidmarks.AddSkidMark (worldPose, Vector3.up, slip, lastSkidFrontRight);
+			else
+				lastSkidFrontRight = -1;
+		}
+		else {
+			if (slip > skidSlip) 
+				lastSkidRearRight = skidmarks.AddSkidMark (worldPose, Vector3.up, slip, lastSkidRearRight);
+			else
+				lastSkidRearRight = -1;
+		}
 
 	}
 }
