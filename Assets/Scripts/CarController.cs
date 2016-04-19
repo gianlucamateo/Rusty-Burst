@@ -9,6 +9,7 @@ public class CarController : MonoBehaviour {
 	public float ratio;
 	public Rigidbody chassis;
 	public AudioSource carAudio;
+	public float input;
 
 	public void Start(){
 		axleInfos[0].leftWheel.gameObject.GetComponent<WheelCollider>().ConfigureVehicleSubsteps(5f, 50, 50);
@@ -17,6 +18,7 @@ public class CarController : MonoBehaviour {
 
 	public void FixedUpdate()
 	{
+		input = Input.GetAxis ("Triggers");
 		float motor = maxMotorTorque * (Input.GetAxis("Triggers")-Input.GetAxis("Vertical"));
 		float steering = maxSteeringAngle * Input.GetAxis("Horizontal");
 
