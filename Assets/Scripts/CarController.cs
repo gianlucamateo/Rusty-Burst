@@ -6,7 +6,9 @@ public class CarController : MonoBehaviour {
 	public List<AxleInfo> axleInfos; // the information about each individual axle
 	public float maxMotorTorque; // maximum torque the motor can apply to wheel
 	public float maxSteeringAngle; // maximum steer angle the wheel can have
-
+	public float ratio;
+	public Rigidbody chassis;
+	public AudioSource carAudio;
 
 	public void Start(){
 		axleInfos[0].leftWheel.gameObject.GetComponent<WheelCollider>().ConfigureVehicleSubsteps(5f, 50, 50);
@@ -38,6 +40,14 @@ public class CarController : MonoBehaviour {
 
 			}
 		}
+
+		float kmhSpeed = chassis.velocity.magnitude * 3.6f;
+
+		ratio =  kmhSpeed/390f;
+
+		carAudio.pitch = 2*ratio + 0.1f;
+
+		chassis.drag = ratio * ratio * 0.3f;
 
 	}
 }
