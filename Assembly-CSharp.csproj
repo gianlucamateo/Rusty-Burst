@@ -50,6 +50,7 @@
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
      <Compile Include="Assets\Scripts\PowerTest.cs" />
      <Compile Include="Assets\Scripts\Skidmarks.cs" />
+     <Compile Include="Assets\Scripts\StartMenu.cs" />
      <Compile Include="Assets\Scripts\TachoScript.cs" />
      <Compile Include="Assets\Scripts\WheelTurnScript.cs" />
      <None Include="Assets\sky5X\README.txt" />
