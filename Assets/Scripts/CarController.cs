@@ -23,6 +23,7 @@ public class CarController : MonoBehaviour {
 	private bool inAir;
 	public bool iceTyres = false;
 	public float rpm;
+	public ParticleSystem smoke;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
 
@@ -156,10 +157,15 @@ public class CarController : MonoBehaviour {
 				lastSkidFrontLeft = -1;
 		}
 		else {
-			if (slip > skidSlip) 
+			if (slip > skidSlip) {
+				ParticleSystem.EmissionModule em = smoke.emission;
+				em.enabled = true;
 				lastSkidRearLeft = skidmarks.AddSkidMark (worldPose, Vector3.up, slip, lastSkidRearLeft);
-			else
+			} else {
+				ParticleSystem.EmissionModule em = smoke.emission;
+				em.enabled = false;
 				lastSkidRearLeft = -1;
+			}
 		}
 
 		axleInfo.rightWheel.GetWorldPose (out worldPose, out quat);
