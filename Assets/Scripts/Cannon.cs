@@ -6,6 +6,7 @@ public class Cannon : MonoBehaviour {
 	public GameObject projectilePrefab;
 	public GameObject Cockpit;
 	public GameObject Gun;
+	public Rigidbody ChassisRigidB;
 
 	private bool fire = true;
 
@@ -64,6 +65,7 @@ public class Cannon : MonoBehaviour {
 		Vector3 spawnPos = transform.position + new Vector3 (0.0f, 0.2f, 0.0f);
 		GameObject projectile = Instantiate(projectilePrefab, spawnPos, transform.rotation) as GameObject;
        		 //projectile.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
+		projectile.GetComponent<Rigidbody>().velocity = ChassisRigidB.velocity;
 		projectile.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 60, ForceMode.Impulse);
 		// change firing rate here
 		yield return new WaitForSeconds(0.5f);
