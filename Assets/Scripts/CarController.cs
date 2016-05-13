@@ -88,11 +88,11 @@ public class CarController : MonoBehaviour {
 
 		}
 
-		float kmhSpeed = chassis.velocity.magnitude * 3.6f;
+		float rpms = axleInfos[0].leftWheel.rpm;
 
-		ratio =  kmhSpeed/390f;
+		ratio =  rpms/2900f;
 
-		carAudio.pitch = 2*ratio + 0.1f;
+		carAudio.pitch = 2*ratio + 0.3f;
 
 		chassis.drag = ratio * ratio * 0.3f;
 
