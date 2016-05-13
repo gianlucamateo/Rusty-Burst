@@ -22,6 +22,7 @@ public class CarController : MonoBehaviour {
 	public List<GameObject> tyres;
 	private bool inAir;
 	public bool iceTyres = false;
+	public float rpm;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
 
@@ -49,17 +50,20 @@ public class CarController : MonoBehaviour {
 
 		handleIceTyres (iceTyres);
 
+
+
 		foreach (AxleInfo axleInfo in axleInfos) {
+			rpm = axleInfo.leftWheel.rpm;
 			if (axleInfo.steering) {
 				axleInfo.leftWheel.steerAngle = steering;
 				axleInfo.rightWheel.steerAngle = steering;
 			}
 			if (axleInfo.motor) {
 				if (motor > 30) {
-					axleInfo.leftWheel.brakeTorque = motor * axleInfo.brakeScale ;
-					axleInfo.rightWheel.brakeTorque = motor * axleInfo.brakeScale ;
-					axleInfo.leftWheel.motorTorque = 0;
-					axleInfo.rightWheel.motorTorque = 0;
+					axleInfo.leftWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.leftWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
+					axleInfo.rightWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.rightWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
+					axleInfo.leftWheel.motorTorque = -40;
+					axleInfo.rightWheel.motorTorque = -40;
 					foreach (GameObject brakeLight in brakeLights) {
 						brakeLight.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.red);
 					}
