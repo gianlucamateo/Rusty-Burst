@@ -11,6 +11,7 @@ public class MeshGenerator : MonoBehaviour
     public BezierCurve outline;
 	public int resolution = 100;
 
+
     private static int numOutlinePoints = 30;
 
     // Use this for initialization
@@ -29,6 +30,7 @@ public class MeshGenerator : MonoBehaviour
 
     Mesh CreateMesh(int resolution)
     {
+		var baseRot = outline.transform.rotation;
         var m = new Mesh();
         m.name = "ScriptedMesh";
 
@@ -88,6 +90,7 @@ public class MeshGenerator : MonoBehaviour
 
         }
 
+		outline.transform.rotation = baseRot;
         m.vertices = vertices.ToArray();
         m.triangles = indices.ToArray();
         m.colors = colors.ToArray();

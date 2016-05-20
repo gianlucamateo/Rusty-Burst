@@ -35,13 +35,17 @@ public class Cannon : MonoBehaviour {
 		if (Input.GetKey(KeyCode.D)) {
 			Cockpit.transform.Rotate(0.0f, 1.0f, 0.0f);
 		}
-		
+
+		float xtrans = Gun.transform.eulerAngles.x;
+
 		if (Input.GetKey(KeyCode.W)) {
-			Gun.transform.Rotate(-1.0f, 0.0f, 0.0f);
+			if(xtrans >= 320 || xtrans <= 30)
+				Gun.transform.Rotate(-1.0f, 0.0f, 0.0f);
 		}
 
 		if (Input.GetKey(KeyCode.S)) {
-			Gun.transform.Rotate(1.0f, 0.0f, 0.0f);
+			if(xtrans >= 310 || xtrans <= 20)
+				Gun.transform.Rotate(1.0f, 0.0f, 0.0f);
 		}
 	}
 
@@ -67,6 +71,10 @@ public class Cannon : MonoBehaviour {
        		 //projectile.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
 		projectile.GetComponent<Rigidbody>().velocity = ChassisRigidB.velocity;
 		projectile.GetComponent<Rigidbody>().AddRelativeForce(Vector3.forward * 60, ForceMode.Impulse);
+		var globalDir = transform.TransformVector(Vector3.right);
+
+		ChassisRigidB.AddTorque (-globalDir * 9000);
+
 		// change firing rate here
 		yield return new WaitForSeconds(0.5f);
 		fire = true;

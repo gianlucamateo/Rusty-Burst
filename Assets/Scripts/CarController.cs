@@ -22,7 +22,7 @@ public class CarController : MonoBehaviour {
 	public List<GameObject> tyres;
 	private bool inAir;
 	public bool iceTyres = false;
-	public float rpm;
+	public float rpm, BaseDrag;
 	public ParticleSystem smoke;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
@@ -63,8 +63,8 @@ public class CarController : MonoBehaviour {
 				if (motor > 30) {
 					axleInfo.leftWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.leftWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
 					axleInfo.rightWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.rightWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
-					axleInfo.leftWheel.motorTorque = -40;
-					axleInfo.rightWheel.motorTorque = -40;
+					axleInfo.leftWheel.motorTorque = -400;
+					axleInfo.rightWheel.motorTorque = -400;
 					foreach (GameObject brakeLight in brakeLights) {
 						brakeLight.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.red);
 					}
@@ -77,7 +77,9 @@ public class CarController : MonoBehaviour {
 						brakeLight.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 					}
 				}
-
+				if(rpm>2900f * 3)
+					axleInfo.leftWheel.motorTorque = 0f;
+					axleInfo.rightWheel.motorTorque = 0f;
 			}
 			if (inAir) {
 				moveAir(forwards,steeringInput);
@@ -94,7 +96,7 @@ public class CarController : MonoBehaviour {
 
 		carAudio.pitch = 2*ratio + 0.3f;
 
-		chassis.drag = ratio * ratio * 0.3f;
+		chassis.drag = ratio * ratio * BaseDrag;
 
 	}
 
