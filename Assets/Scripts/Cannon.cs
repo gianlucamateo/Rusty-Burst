@@ -7,6 +7,7 @@ public class Cannon : MonoBehaviour {
 	public GameObject Cockpit;
 	public GameObject Gun;
 	public Rigidbody ChassisRigidB;
+	public Animation fireAnim;
 
 	private bool fire = true;
 
@@ -78,5 +79,6 @@ public class Cannon : MonoBehaviour {
 		// change firing rate here
 		yield return new WaitForSeconds(0.5f);
 		fire = true;
+		fireAnim.Play ();
 	}
 }

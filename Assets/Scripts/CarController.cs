@@ -77,9 +77,6 @@ public class CarController : MonoBehaviour {
 						brakeLight.GetComponent<Renderer> ().material.SetColor ("_EmissionColor", Color.black);
 					}
 				}
-				if(rpm>2900f * 3)
-					axleInfo.leftWheel.motorTorque = 0f;
-					axleInfo.rightWheel.motorTorque = 0f;
 			}
 			if (inAir) {
 				moveAir(forwards,steeringInput);
