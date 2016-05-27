@@ -7,9 +7,9 @@ public class CarController : MonoBehaviour {
 	public float maxMotorTorque; // maximum torque the motor can apply to wheel
 	public float maxSteeringAngle; // maximum steer angle the wheel can have
 	public float ratio;
+	public string PowerAxis, SteeringAxis;
 	public Rigidbody chassis;
 	public AudioSource carAudio;
-	public float input;
 	private int lastSkidRearLeft = -1;
 	private int lastSkidFrontLeft = -1;
 	private int lastSkidRearRight = -1;
@@ -38,14 +38,28 @@ public class CarController : MonoBehaviour {
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
 	}
 
+	private float GetSteering(){
+		return Input.GetAxis (SteeringAxis);
+	}
 
+	private float GetPower(){
+		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
+			return Input.GetAxis (PowerAxis + "Win");
+		}
+		if (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor) {
+			return Input.GetAxis (PowerAxis + "ForwardMac") - Input.GetAxis (PowerAxis + "ReverseMac");
+		}
+		if (Application.platform == RuntimePlatform.LinuxPlayer) {
+			return Input.GetAxis (PowerAxis + "ForwardLinux") - Input.GetAxis (PowerAxis + "ReverseLinux");
+		}
+		return 0;
+	}
 
 	public void FixedUpdate()
 	{
-		float forwards = Input.GetAxis ("Triggers") - Input.GetAxis ("Vertical");
-		float steeringInput = Input.GetAxis ("Horizontal");
+		float forwards = GetPower ();
+		float steeringInput = GetSteering ();
 		inAir = !Physics.Raycast (this.transform.position, -this.transform.up, 1f);
-		input = Input.GetAxis ("Triggers");
 		float motor = maxMotorTorque * forwards;
 		float steering = maxSteeringAngle * steeringInput;
 

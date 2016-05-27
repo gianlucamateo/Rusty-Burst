@@ -47,6 +47,7 @@
   <ItemGroup>
      <Compile Include="Assets\BezierCurves\Scripts\BezierCurve.cs" />
      <Compile Include="Assets\BezierCurves\Scripts\BezierPoint.cs" />
+     <Compile Include="Assets\DestroyBullet.cs" />
      <Compile Include="Assets\Scripts\Cannon.cs" />
      <Compile Include="Assets\Scripts\CarController.cs" />
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
