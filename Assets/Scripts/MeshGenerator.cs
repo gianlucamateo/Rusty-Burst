@@ -79,7 +79,11 @@ public class MeshGenerator : MonoBehaviour
         // Close path
         outline.transform.rotation = baseRot;
         vertices.AddRange(vertices.GetRange(0, realOutlineResolution));
-        texCoords.AddRange(texCoords.GetRange(0, realOutlineResolution));
+		for (var i = 0; i < outlineResolution; i++) {
+			texCoords.Add (new Vector2 (1f, i / (float)outlineResolution));
+		}
+		texCoords.Add (Vector2.one);
+        //texCoords.AddRange(texCoords.GetRange(0, realOutlineResolution));
         colors.AddRange(colors.GetRange(0, realOutlineResolution));
 
         // Generate indices
