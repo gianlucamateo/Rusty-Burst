@@ -48,6 +48,7 @@
      <Compile Include="Assets\Scripts\Cannon.cs" />
      <Compile Include="Assets\Scripts\CarController.cs" />
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
+     <Compile Include="Assets\Scripts\OptionsMenu.cs" />
      <Compile Include="Assets\Scripts\PowerTest.cs" />
      <Compile Include="Assets\Scripts\Skidmarks.cs" />
      <Compile Include="Assets\Scripts\StartMenu.cs" />
