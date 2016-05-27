@@ -42,12 +42,16 @@ public class CarController : MonoBehaviour {
 		return Input.GetAxis (SteeringAxis);
 	}
 
+	private float shift(float input){
+		return (input + 1f) / 2f;
+	}
+
 	private float GetPower(){
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
 			return Input.GetAxis (PowerAxis + "Win");
 		}
 		if (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor) {
-			return Input.GetAxis (PowerAxis + "ForwardMac") - Input.GetAxis (PowerAxis + "ReverseMac");
+			return shift(Input.GetAxis (PowerAxis + "ForwardMac")) - shift(Input.GetAxis (PowerAxis + "ReverseMac"));
 		}
 		if (Application.platform == RuntimePlatform.LinuxPlayer) {
 			return Input.GetAxis (PowerAxis + "ForwardLinux") - Input.GetAxis (PowerAxis + "ReverseLinux");
