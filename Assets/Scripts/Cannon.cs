@@ -77,7 +77,7 @@ public class Cannon : MonoBehaviour {
 
 		carVP = carCam.rect;
 		var offset = carVP.y;//== 0.5? 0f : 0.5f;
-		basePos = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(50f,-50f,0f);
+		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(50f,-50f,0f);
 		// posOnScreen = new Vector2(carCam.pixelWidth/2-50,(carCam.pixelHeight*(3-(offset)))/2-50);
 
 
@@ -94,7 +94,7 @@ public class Cannon : MonoBehaviour {
        		 //projectile.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
 		var projectileRB = projectile.GetComponent<Rigidbody>();
 		projectileRB.velocity = ChassisRigidB.velocity;
-		projectileRB.AddRelativeForce(Vector3.forward * 60, ForceMode.Impulse);
+		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
 		projectileRB.mass = 100;
 		projectileRB.useGravity = false;
 		var globalDir = transform.TransformVector(Vector3.right);
