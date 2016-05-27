@@ -14,6 +14,7 @@ public class CarController : MonoBehaviour {
 	private int lastSkidFrontLeft = -1;
 	private int lastSkidRearRight = -1;
 	private int lastSkidFrontRight = -1;
+	private float maxRPM = 2500f;
 	public Skidmarks skidmarks;
 	public Vector3 worldPose;
 	private float slip;
@@ -78,6 +79,9 @@ public class CarController : MonoBehaviour {
 				axleInfo.rightWheel.steerAngle = steering;
 			}
 			if (axleInfo.motor) {
+				if (Mathf.Abs(axleInfo.leftWheel.rpm) > maxRPM) {
+					motor = 0;
+				}
 				if (motor > 30) {
 					axleInfo.leftWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.leftWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
 					axleInfo.rightWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.rightWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
