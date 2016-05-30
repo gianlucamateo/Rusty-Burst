@@ -16,6 +16,8 @@ public class Cannon : MonoBehaviour {
 
 	private bool fire = true;
 
+	static float RETICLE_SIZE = 40f;
+
 	void LateUpdate(){
 
 		//// Code for movement using mouse
@@ -77,14 +79,15 @@ public class Cannon : MonoBehaviour {
 
 		carVP = carCam.rect;
 		var offset = carVP.y;//== 0.5? 0f : 0.5f;
-		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(50f,-50f,0f);
+		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(RETICLE_SIZE / 2f,-RETICLE_SIZE / 2f,0f);
 		// posOnScreen = new Vector2(carCam.pixelWidth/2-50,(carCam.pixelHeight*(3-(offset)))/2-50);
 
 
 		if (rayCast) {
-			posOnScreen = carCam.WorldToScreenPoint (rcHit.point) - new Vector3(50f,-50f,0f);
+			posOnScreen = carCam.WorldToScreenPoint (rcHit.point) - new Vector3(RETICLE_SIZE / 2f, -RETICLE_SIZE / 2f ,0f);
 		}
-		GUI.DrawTexture (new Rect (new Vector2(posOnScreen.x,Screen.height - posOnScreen.y), (new Vector2 (100f, 100f))),reticle);
+
+		GUI.DrawTexture (new Rect (posOnScreen.x, Screen.height - posOnScreen.y, RETICLE_SIZE, RETICLE_SIZE), reticle);
 	}
 
 	IEnumerator Fire(){
