@@ -78,10 +78,8 @@ public class Cannon : MonoBehaviour {
 		var rayCast = Physics.Raycast(transform.position + 0.2f*transform.up, transform.forward,out rcHit);
 
 		carVP = carCam.rect;
-		var offset = carVP.y;//== 0.5? 0f : 0.5f;
-		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(RETICLE_SIZE / 2f,-RETICLE_SIZE / 2f,0f);
-		// posOnScreen = new Vector2(carCam.pixelWidth/2-50,(carCam.pixelHeight*(3-(offset)))/2-50);
 
+		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(RETICLE_SIZE / 2f,-RETICLE_SIZE / 2f,0f);
 
 		if (rayCast) {
 			posOnScreen = carCam.WorldToScreenPoint (rcHit.point) - new Vector3(RETICLE_SIZE / 2f, -RETICLE_SIZE / 2f ,0f);
