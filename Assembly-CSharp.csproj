@@ -49,6 +49,7 @@
      <Compile Include="Assets\BezierCurves\Scripts\BezierPoint.cs" />
      <Compile Include="Assets\CheckPoint.cs" />
      <Compile Include="Assets\DestroyBullet.cs" />
+     <Compile Include="Assets\Player.cs" />
      <Compile Include="Assets\Scripts\Cannon.cs" />
      <Compile Include="Assets\Scripts\CarController.cs" />
      <Compile Include="Assets\Scripts\DownforceScript.cs" />
