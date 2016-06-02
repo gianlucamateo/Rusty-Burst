@@ -18,7 +18,8 @@ public class TrackManager : MonoBehaviour {
 
 	public float trackLength = 0.0f;
 	public float[] distanceToFinish = { 0f, 0f };
-
+	public float[] roundTime = { 0f, 0f };
+	public float[] startTime = { 0f, 0f };
 
 	void Start () {
         // Teleport to start
@@ -29,6 +30,9 @@ public class TrackManager : MonoBehaviour {
 		for (var i = 0; i < checkpoints.Count - 1; i++) {
 			trackLength += (checkpoints [i + 1].transform.position - checkpoints [i].transform.position).magnitude;
 		}
+		// Set timer times
+		startTime[0] = Time.time;
+		startTime[1] = Time.time;
 	}
 
 	void Update () {
@@ -63,8 +67,10 @@ public class TrackManager : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Label(new Rect(0, 0, 400, 20), String.Format("Player 0: Next CP: {0}, Round: {1}, Rank: {2}", nextCheckPoint[0], round[0], rank[0]));
-		GUI.Label(new Rect(0, 20, 400, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}", nextCheckPoint[1], round[1], rank[1]));
+		GUI.Label(new Rect(0, 0, 600, 20), String.Format("Player 0: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
+			nextCheckPoint[0], round[0], rank[0], roundTime[0], Time.time - startTime[0]));
+		GUI.Label(new Rect(0, 20, 600, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
+			nextCheckPoint[1], round[1], rank[1], roundTime[1], Time.time - startTime[1]));
     }
 
 	public void NotifyCheckpoint(Player player, int checkpoint) {
@@ -79,6 +85,8 @@ public class TrackManager : MonoBehaviour {
             if (nextCheckPoint[playerId] == 1) {
                 round[playerId]++;
 				distanceToFinish [playerId] = 0.0f;
+				roundTime [playerId] = Time.time - startTime[playerId];
+				startTime [playerId] = Time.time;
             }
 	    }
 	}
