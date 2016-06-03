@@ -36,6 +36,6 @@ public class WheelTurnScript : MonoBehaviour {
 		wCollider.GetGroundHit (out hit);
 		slip = hit.forwardSlip;
 		transform.localPosition = new Vector3 (transform.localPosition.x,center.y,transform.localPosition.z);
-		transform.localRotation = Quaternion.Euler(0,0,0)*Quaternion.Euler (0, wCollider.steerAngle, 0)*Quaternion.Euler (-axisRotation, 0, 0);
+		transform.localRotation = Quaternion.Euler(0,0,0)*Quaternion.Euler (0, wCollider.steerAngle, 0)*Quaternion.Euler (axisRotation, 0, 0);
 	}
 }

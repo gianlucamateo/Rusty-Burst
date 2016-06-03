@@ -125,7 +125,7 @@ public class CarController : MonoBehaviour {
 
 		carAudio.pitch = 2*ratio + 0.3f;
 
-		chassis.drag = ratio * ratio * BaseDrag;
+		chassis.drag = gameObject.GetComponent<Rigidbody>().velocity.magnitude * gameObject.GetComponent<Rigidbody>().velocity.magnitude * BaseDrag;
 
 	}
 
