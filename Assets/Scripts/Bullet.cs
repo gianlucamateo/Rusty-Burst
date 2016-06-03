@@ -20,6 +20,9 @@ public class Bullet : MonoBehaviour {
 	void OnCollisionEnter(Collision col){
 		var exp = Instantiate(explosion, transform.position, transform.rotation) as GameObject;
 		Destroy (exp, 1f);
+		var carContrl = col.gameObject.GetComponent<CarController> ();
+		if(carContrl != null)
+			carContrl.ActivateIceTyres();
 		Destroy (gameObject);
 	}
 }

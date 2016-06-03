@@ -46,12 +46,12 @@ public class Cannon : MonoBehaviour {
 
 		float xtrans = Gun.transform.localEulerAngles.x;
 
-		if (Input.GetKey(up)) {
+		if (Input.GetKey(down)) {
 			if(xtrans >= 320 || xtrans <= 30)
 				Gun.transform.Rotate(-1.0f, 0.0f, 0.0f);
 		}
 
-		if (Input.GetKey(down)) {
+		if (Input.GetKey(up)) {
 			if(xtrans >= 310 || xtrans <= 20)
 				Gun.transform.Rotate(1.0f, 0.0f, 0.0f);
 		}
@@ -96,7 +96,7 @@ public class Cannon : MonoBehaviour {
 		var projectileRB = projectile.GetComponent<Rigidbody>();
 		projectileRB.velocity = ChassisRigidB.velocity;
 		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
-		projectileRB.mass = 100;
+		projectileRB.mass = 50;
 		projectileRB.useGravity = false;
 		var globalDir = transform.TransformVector(Vector3.right);
 

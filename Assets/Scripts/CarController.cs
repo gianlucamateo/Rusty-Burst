@@ -39,6 +39,16 @@ public class CarController : MonoBehaviour {
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
 	}
 
+	public void ActivateIceTyres(){
+		iceTyres = true;
+		StartCoroutine (deactivateIceTyres());
+	}
+
+	private IEnumerator deactivateIceTyres(){
+		yield return new WaitForSeconds (10f);
+		iceTyres = false;
+	}
+
 	private float GetSteering(){
 		return Input.GetAxis (SteeringAxis);
 	}
