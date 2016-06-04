@@ -1,18 +1,27 @@
 fileFormatVersion: 2
-guid: 611b74fa1f2067748a46098b7cd42b57
-timeCreated: 1460995511
+guid: 57a5c123dce7fd04790dd6581577fc79
+timeCreated: 1465054779
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    100002: //RootNode
-    400000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    400002: //RootNode
-    2300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    3300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    4300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    6400000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
+    100000: instance_0
+    100002: instance_1
+    100004: //RootNode
+    100006: Loop_-_wall_lamp
+    100008: skp_camera_Last_Saved_SketchUp_View
+    100010: skpF5E3
+    400000: instance_0
+    400002: instance_1
+    400004: //RootNode
+    400006: Loop_-_wall_lamp
+    400008: skp_camera_Last_Saved_SketchUp_View
+    400010: skpF5E3
+    2300000: skpF5E3
+    3300000: skpF5E3
+    4300000: skpF5E3
+    6400000: skpF5E3
+    9500000: //RootNode
   materials:
     importMaterials: 1
     materialName: 0
@@ -71,7 +80,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

@@ -1,22 +1,34 @@
 fileFormatVersion: 2
-guid: 611b74fa1f2067748a46098b7cd42b57
-timeCreated: 1460995511
+guid: a5bcfaff1edb35242b401ad963a65fc0
+timeCreated: 1465054593
 licenseType: Free
-ModelImporter:
+SketchUpImporter:
+  generateBackFace: 0
+  mergeCoplanarFaces: 0
+  selectedNodes: 
+  assetHash:
+    serializedVersion: 2
+    Hash: 2a9de4c259a673f2c96ae88f1e596818
+  longitude: 0
+  latitude: 0
+  northCorrection: 0
+  fileUnit: 0
+  sketchUpImportData:
+    defaultCamera:
+      position: {x: 0, y: 0, z: 0}
+      lookAt: {x: 0, y: 0, z: 1}
+      up: {x: 0, y: 1, z: 0}
+      fov: 45
+      aspectRatio: 1.33
+      orthoSize: 0
+      isPerspective: 1
+    scenes: []
   serializedVersion: 19
-  fileIDToRecycleName:
-    100000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    100002: //RootNode
-    400000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    400002: //RootNode
-    2300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    3300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    4300000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
-    6400000: Mesh1_skpF41B1_tube_the_tube__skate_parkbuild_1_Model
+  fileIDToRecycleName: {}
   materials:
     importMaterials: 1
-    materialName: 0
-    materialSearch: 1
+    materialName: 2
+    materialSearch: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -37,9 +49,9 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.0254
     meshCompression: 0
-    addColliders: 1
+    addColliders: 0
     importBlendShapes: 1
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -56,7 +68,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-  importAnimation: 1
+  importAnimation: 0
   copyAvatar: 0
   humanDescription:
     human: []
