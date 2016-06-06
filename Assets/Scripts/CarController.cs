@@ -14,7 +14,7 @@ public class CarController : MonoBehaviour {
 	private int lastSkidFrontLeft = -1;
 	private int lastSkidRearRight = -1;
 	private int lastSkidFrontRight = -1;
-	private float maxRPM = 2500f;
+	private float maxRPM = 2900f;
 	public Skidmarks skidmarks;
 	public Vector3 worldPose;
 	private float slip;
@@ -28,6 +28,8 @@ public class CarController : MonoBehaviour {
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
 	public float boost = 0;
+	public Bullet.Type modifier = Bullet.Type.NORMAL;
+	private Dictionary<Bullet.Type,System.Action> actionDict;
 
 
 	public void Start(){
@@ -38,7 +40,17 @@ public class CarController : MonoBehaviour {
 
 		this.rearBaseForward = axleInfos [0].leftWheel.forwardFriction;
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
+
+		actionDict = new Dictionary<Bullet.Type,System.Action>(){
+			{Bullet.Type.NORMAL, () =>{}},
+			{Bullet.Type.ICE, ActivateIceTyres}
+		};
 	}
+		
+	public void ActivateModifier(Bullet.Type type){
+		actionDict [type] ();
+	}
+		
 
 	public void ActivateIceTyres(){
 		iceTyres = true;
@@ -134,17 +146,17 @@ public class CarController : MonoBehaviour {
 		if (iceTyres) {
 			foreach (AxleInfo axleInfo in axleInfos) {
 				WheelFrictionCurve curve = axleInfo.leftWheel.forwardFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.leftWheel.forwardFriction = curve;
 				curve = axleInfo.rightWheel.forwardFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.rightWheel.forwardFriction = curve;
 
 				curve = axleInfo.leftWheel.sidewaysFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.leftWheel.sidewaysFriction = curve;
 				curve = axleInfo.rightWheel.sidewaysFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.rightWheel.sidewaysFriction = curve;
 			}
 

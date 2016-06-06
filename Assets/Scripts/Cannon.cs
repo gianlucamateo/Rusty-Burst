@@ -13,6 +13,7 @@ public class Cannon : MonoBehaviour {
 	public Camera carCam;
 	public Rect carVP;
 	public Vector3 basePos, posOnScreen;
+	public CarController carCtrl;
 
 	private bool fire = true;
 
@@ -61,7 +62,7 @@ public class Cannon : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		carCtrl = transform.gameObject.GetComponentInParent<CarController> ();
 	}
 	
 	// Update is called once per frame
@@ -93,6 +94,8 @@ public class Cannon : MonoBehaviour {
 		Vector3 spawnPos = transform.position + new Vector3 (0.0f, 0.2f, 0.0f);
 		GameObject projectile = Instantiate(projectilePrefab, spawnPos, transform.rotation) as GameObject;
        		 //projectile.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
+		projectile.GetComponent<Bullet>().modifier = carCtrl.modifier;
+		carCtrl.modifier = Bullet.Type.NORMAL;
 		var projectileRB = projectile.GetComponent<Rigidbody>();
 		projectileRB.velocity = ChassisRigidB.velocity;
 		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
