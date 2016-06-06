@@ -67,7 +67,7 @@ public class Cannon : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		Debug.DrawRay(transform.position+ 0.2f*transform.up, transform.forward*1000,Color.white);
+		Debug.DrawRay(transform.position+ 0.25f*transform.up, transform.forward*1000,Color.white);
 		//if (Input.GetButtonDown("Fire1")) {
 		if (Input.GetKey(fireKey) && fire){
 			StartCoroutine(Fire());

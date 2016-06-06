@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 	public enum Type {
-		NORMAL, ICE
+		NORMAL, ICE, ENGINE_STUN, HEAVY
 	}
 	// Change time to destroy bullets here
 	float destructTime = 5.0f;
@@ -17,7 +17,10 @@ public class Bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (modifier == Type.HEAVY) {
+			this.GetComponent<Rigidbody> ().mass = 50000;
+			this.transform.localScale = new Vector3 (10f, 10f, 10f);
+		}
 	}
 
 	void OnCollisionEnter(Collision col){

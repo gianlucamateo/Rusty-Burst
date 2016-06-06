@@ -14,6 +14,7 @@ public class CarController : MonoBehaviour {
 	private int lastSkidFrontLeft = -1;
 	private int lastSkidRearRight = -1;
 	private int lastSkidFrontRight = -1;
+	private JointSpring spring, backup;
 	private float maxRPM = 2900f;
 	public Skidmarks skidmarks;
 	public Vector3 worldPose;
@@ -22,7 +23,7 @@ public class CarController : MonoBehaviour {
 	public List<GameObject> brakeLights;
 	public List<GameObject> tyres;
 	private bool inAir;
-	public bool iceTyres = false;
+	public bool iceTyres = false, stunEngine = false;
 	public float rpm, BaseDrag;
 	public ParticleSystem smoke;
 	private Color tyreBaseColor;
@@ -40,23 +41,35 @@ public class CarController : MonoBehaviour {
 
 		this.rearBaseForward = axleInfos [0].leftWheel.forwardFriction;
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
+		this.backup = axleInfos [0].leftWheel.suspensionSpring;
+
+
 
 		actionDict = new Dictionary<Bullet.Type,System.Action>(){
 			{Bullet.Type.NORMAL, () =>{}},
-			{Bullet.Type.ICE, ActivateIceTyres}
+			{Bullet.Type.HEAVY, () =>{}},
+			{Bullet.Type.ICE, ActivateIceTyres},
+			{Bullet.Type.ENGINE_STUN, ActivateEngineStun},
 		};
 	}
 		
 	public void ActivateModifier(Bullet.Type type){
 		actionDict [type] ();
 	}
-		
 
-	public void ActivateIceTyres(){
+	private void ActivateEngineStun(){
+		stunEngine = true;
+		StartCoroutine (deactivateEngineStun());
+	}
+	private IEnumerator deactivateEngineStun(){
+		yield return new WaitForSeconds (10f);
+		stunEngine = false;
+	}
+
+	private void ActivateIceTyres(){
 		iceTyres = true;
 		StartCoroutine (deactivateIceTyres());
 	}
-
 	private IEnumerator deactivateIceTyres(){
 		yield return new WaitForSeconds (10f);
 		iceTyres = false;
@@ -89,6 +102,9 @@ public class CarController : MonoBehaviour {
 		float steeringInput = GetSteering ();
 		inAir = !Physics.Raycast (this.transform.position, -this.transform.up, 1f);
 		float motor = (maxMotorTorque + boost) * forwards;
+		if (stunEngine) motor /= 3;
+
+
 		float steering = maxSteeringAngle * steeringInput;
 
 		handleIceTyres (iceTyres);
