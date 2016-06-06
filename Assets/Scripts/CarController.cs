@@ -27,6 +27,7 @@ public class CarController : MonoBehaviour {
 	public ParticleSystem smoke;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
+	public float boost = 0;
 
 
 	public void Start(){
@@ -75,7 +76,7 @@ public class CarController : MonoBehaviour {
 		float forwards = GetPower ();
 		float steeringInput = GetSteering ();
 		inAir = !Physics.Raycast (this.transform.position, -this.transform.up, 1f);
-		float motor = maxMotorTorque * forwards;
+		float motor = (maxMotorTorque + boost) * forwards;
 		float steering = maxSteeringAngle * steeringInput;
 
 		handleIceTyres (iceTyres);
