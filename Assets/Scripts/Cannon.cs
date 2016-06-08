@@ -15,6 +15,8 @@ public class Cannon : MonoBehaviour {
 	public Rect carVP;
 	public Vector3 basePos, posOnScreen, iconPosOnScreen;
 	public CarController carCtrl;
+	public GameObject hitObj, hitObj2;
+	public LayerMask mask, mask2;
 
 	private Dictionary<Bullet.Type,Texture2D> imgDict;
 
@@ -22,44 +24,6 @@ public class Cannon : MonoBehaviour {
 
 	static float RETICLE_SIZE = 40f;
 
-	void LateUpdate(){
-
-		//// Code for movement using mouse
-		//float x = Input.GetAxis("Mouse X") * 2;
-		//float y = -Input.GetAxis("Mouse Y");
-
-		////vertical
-		//float yClamped = transform.eulerAngles.x + y;
-		//transform.rotation = Quaternion.Euler(yClamped, transform.eulerAngles.y, transform.eulerAngles.z);
-
-		////horizontal
-		//transform.RotateAround(new Vector3(0, 3, 0), Vector3.up, x);
-		////test horizontal
-		////float xClamped = transform.eulerAngles.y + x;
-		////transform.rotation = Quaternion.Euler(transform.eulerAngles.x, xClamped, transform.eulerAngles.z);
-
-		//var angle = Mathf.Clamp(angle, 90, 270);
-
-		if (Input.GetKey(left)) {
-			Cockpit.transform.Rotate(0.0f, -1.0f, 0.0f);
-		}
-
-		if (Input.GetKey(right)) {
-			Cockpit.transform.Rotate(0.0f, 1.0f, 0.0f);
-		}
-
-		float xtrans = Gun.transform.localEulerAngles.x;
-
-		if (Input.GetKey(down)) {
-			if(xtrans >= 320 || xtrans <= 30)
-				Gun.transform.Rotate(-1.0f, 0.0f, 0.0f);
-		}
-
-		if (Input.GetKey(up)) {
-			if(xtrans >= 310 || xtrans <= 20)
-				Gun.transform.Rotate(1.0f, 0.0f, 0.0f);
-		}
-	}
 
 
 
@@ -86,19 +50,54 @@ public class Cannon : MonoBehaviour {
 
 		carCtrl = transform.gameObject.GetComponentInParent<CarController> ();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
+		RaycastHit hitInfo;
+
+		mask = 1 << 8;
+		Physics.Raycast (transform.position + 0.25f * transform.up , transform.forward, out hitInfo, 1000f, mask);
+
+		if (hitInfo.collider != null)
+			hitObj = hitInfo.collider.gameObject;
+		else
+			hitObj = null;
 		Debug.DrawRay(transform.position+ 0.25f*transform.up, transform.forward*1000,Color.white);
 		//if (Input.GetButtonDown("Fire1")) {
 		if (Input.GetKey(fireKey) && fire){
 			StartCoroutine(Fire());
     		}
+
+		if (Input.GetKey(left)) {
+			Cockpit.transform.Rotate(0.0f, -1.0f, 0.0f);
+		}
+
+		if (Input.GetKey(right)) {
+			Cockpit.transform.Rotate(0.0f, 1.0f, 0.0f);
+		}
+
+		float xtrans = Gun.transform.localEulerAngles.x;
+
+		if (Input.GetKey(down)) {
+			if(xtrans >= 320 || xtrans <= 30)
+				Gun.transform.Rotate(-1.0f, 0.0f, 0.0f);
+		}
+
+		if (Input.GetKey(up)) {
+			if(xtrans >= 310 || xtrans <= 20)
+				Gun.transform.Rotate(1.0f, 0.0f, 0.0f);
+		}
 	}
 
 	void OnGUI() {
 		RaycastHit rcHit;
-		var rayCast = Physics.Raycast(transform.position + 0.2f*transform.up, transform.forward,out rcHit);
+		mask2 = ~(mask | 1<<2);
+		var rayCast = Physics.Raycast(transform.position + 0.2f*transform.up, transform.forward,out rcHit, 1000f, mask2);
+
+		if (rcHit.collider != null)
+			hitObj2 = rcHit.collider.gameObject;
+		else
+			hitObj2 = null;
 
 		carVP = carCam.rect;
 

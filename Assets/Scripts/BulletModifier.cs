@@ -16,7 +16,9 @@ public class BulletModifier : MonoBehaviour {
 
 
 	void OnTriggerEnter(Collider other){
-		other.gameObject.GetComponentInParent<CarController> ().modifier = this.modifier;
+		CarController carCtrl = other.gameObject.GetComponentInParent<CarController> ();
+		if(carCtrl != null)
+			carCtrl.modifier = this.modifier;
 	}
 
 }
