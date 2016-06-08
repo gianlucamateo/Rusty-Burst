@@ -15,8 +15,10 @@ public class Cannon : MonoBehaviour {
 	public Rect carVP;
 	public Vector3 basePos, posOnScreen, iconPosOnScreen;
 	public CarController carCtrl;
-	public GameObject hitObj, hitObj2;
+	public GameObject hitObj;
 	public LayerMask mask, mask2;
+	public float lockPercentage = 0f;
+	public GameObject lockObj;
 
 	private Dictionary<Bullet.Type,Texture2D> imgDict;
 
@@ -53,15 +55,24 @@ public class Cannon : MonoBehaviour {
 
 	// Update is called once per frame
 	void FixedUpdate () {
+		
+
 		RaycastHit hitInfo;
 
 		mask = 1 << 8;
 		Physics.Raycast (transform.position + 0.25f * transform.up , transform.forward, out hitInfo, 1000f, mask);
 
 		if (hitInfo.collider != null)
-			hitObj = hitInfo.collider.gameObject;
-		else
-			hitObj = null;
+			lockObj = hitInfo.collider.gameObject;
+		
+		if (hitInfo.collider) {
+			lockPercentage += 0.5f;
+			lockPercentage = Mathf.Min(125f,lockPercentage);
+		} else {
+			lockPercentage -= 1;
+			lockPercentage = Mathf.Max(0f,lockPercentage);
+		}
+
 		Debug.DrawRay(transform.position+ 0.25f*transform.up, transform.forward*1000,Color.white);
 		//if (Input.GetButtonDown("Fire1")) {
 		if (Input.GetKey(fireKey) && fire){
@@ -95,9 +106,9 @@ public class Cannon : MonoBehaviour {
 		var rayCast = Physics.Raycast(transform.position + 0.2f*transform.up, transform.forward,out rcHit, 1000f, mask2);
 
 		if (rcHit.collider != null)
-			hitObj2 = rcHit.collider.gameObject;
+			hitObj = rcHit.collider.gameObject;
 		else
-			hitObj2 = null;
+			hitObj = null;
 
 		carVP = carCam.rect;
 
@@ -125,6 +136,9 @@ public class Cannon : MonoBehaviour {
 		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
 		projectileRB.mass = 50;
 		projectileRB.useGravity = false;
+		if (lockPercentage > 100f) {
+			projectile.GetComponent<Bullet> ().target = lockObj;
+		}
 		var globalDir = transform.TransformVector(Vector3.right);
 
 		ChassisRigidB.AddTorque (-globalDir * 9000);
