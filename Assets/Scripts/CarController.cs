@@ -7,7 +7,6 @@ public class CarController : MonoBehaviour {
 	public float maxMotorTorque; // maximum torque the motor can apply to wheel
 	public float maxSteeringAngle; // maximum steer angle the wheel can have
 	public float ratio;
-	public string PowerAxis, SteeringAxis;
 	public Rigidbody chassis;
 	public AudioSource carAudio;
 	private int lastSkidRearLeft = -1;
@@ -76,24 +75,19 @@ public class CarController : MonoBehaviour {
 	}
 
 	private float GetSteering(){
-		return Input.GetAxis (SteeringAxis);
-	}
-
-	private float shift(float input){
-		return (input + 1f) / 2f;
+		return GetComponent<Player> ().InputSteering;
 	}
 
 	private float GetPower(){
-		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor) {
-			return Input.GetAxis (PowerAxis + "Win");
-		}
-		if (Application.platform == RuntimePlatform.OSXPlayer || Application.platform == RuntimePlatform.OSXEditor) {
-			return shift(Input.GetAxis (PowerAxis + "ForwardMac")) - shift(Input.GetAxis (PowerAxis + "ReverseMac"));
-		}
-		if (Application.platform == RuntimePlatform.LinuxPlayer) {
-			return Input.GetAxis (PowerAxis + "ForwardLinux") - Input.GetAxis (PowerAxis + "ReverseLinux");
-		}
-		return 0;
+		return GetComponent<Player> ().InputPower;
+	}
+
+	public void Freeze() {
+		chassis.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+	}
+
+	public void UnFreeze() {
+		chassis.constraints = RigidbodyConstraints.None;	
 	}
 
 	public void FixedUpdate()

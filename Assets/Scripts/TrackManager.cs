@@ -5,8 +5,10 @@ using System.Collections.Generic;
 
 public class TrackManager : MonoBehaviour {
 
-	private static float RESET_HEIGHT_ABOVE_TRACK = 4f;
+	private static float RESET_HEIGHT_ABOVE_TRACK = 2f;
 	private static float RESET_SEPARATION_DISTANCE = 2f;
+
+	public float RaceCountdownTime;
 
 	public List<GameObject> checkpoints = new List<GameObject>();
 
@@ -21,10 +23,17 @@ public class TrackManager : MonoBehaviour {
 	public float[] roundTime = { 0f, 0f };
 	public float[] startTime = { 0f, 0f };
 
+	private float raceStartTime;
+	private bool frozen = true;
+
 	void Start () {
         // Teleport to start
 	    AlignAtCheckPoint(0, player1, RESET_SEPARATION_DISTANCE);
         AlignAtCheckPoint(0, player2, -RESET_SEPARATION_DISTANCE);
+
+		// Freeze player's cars at beginning
+		player1.Freeze ();
+		player2.Freeze ();
 
 		// Compute track length
 		for (var i = 0; i < checkpoints.Count - 1; i++) {
@@ -33,13 +42,22 @@ public class TrackManager : MonoBehaviour {
 		// Set timer times
 		startTime[0] = Time.time;
 		startTime[1] = Time.time;
+
+		raceStartTime = Time.time;
 	}
 
 	void Update () {
-	    if (Input.GetKeyDown(KeyCode.R))
+		if (Time.time - raceStartTime > RaceCountdownTime && frozen) {
+			Debug.LogFormat ("Unfreezing Players");
+			player1.UnFreeze ();
+			player2.UnFreeze ();
+			frozen = false;
+		}
+
+		if (player1.InputReset)
 	        ResetPlayer(player1, RESET_SEPARATION_DISTANCE);
 
-		if (Input.GetKeyDown(KeyCode.Period))
+		if (player2.InputReset)
 	        ResetPlayer(player2, -RESET_SEPARATION_DISTANCE);
 
 		// Calculate Player Rank (num rounds + distance to finish)
@@ -75,6 +93,12 @@ public class TrackManager : MonoBehaviour {
 			nextCheckPoint[0], round[0], rank[0], roundTime[0], Time.time - startTime[0]));
 		GUI.Label(new Rect(0, 20, 600, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
 			nextCheckPoint[1], round[1], rank[1], roundTime[1], Time.time - startTime[1]));
+
+		if (frozen) {
+			var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
+			var label = String.Format ("Starting in {0:0.0}", (RaceCountdownTime - (Time.time - raceStartTime)));
+			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
+		}
     }
 
 	public void NotifyCheckpoint(Player player, int checkpoint) {
@@ -110,7 +134,7 @@ public class TrackManager : MonoBehaviour {
         var cp = checkpoints[checkpoint];
 		var go = player.gameObject;
 
-		go.transform.position = cp.transform.position + new Vector3(offset, RESET_HEIGHT_ABOVE_TRACK, 2f);
+		go.transform.position = cp.transform.position + cp.transform.TransformDirection(offset, RESET_HEIGHT_ABOVE_TRACK, -4f);
 		go.transform.rotation = cp.transform.localRotation;
     }
 }
