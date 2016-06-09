@@ -1,0 +1,17 @@
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/obj/Debug/Assembly-CSharp.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/UnityEngine.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/UnityEditor.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Mono.Cecil.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Unity.DataContract.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/gerberur/uni/game-design/Strawberry-Firecracker/Temp/bin/Debug/Mono.Cecil.Mdb.dll

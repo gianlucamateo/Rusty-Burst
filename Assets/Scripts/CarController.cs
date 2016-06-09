@@ -14,6 +14,8 @@ public class CarController : MonoBehaviour {
 	private int lastSkidFrontLeft = -1;
 	private int lastSkidRearRight = -1;
 	private int lastSkidFrontRight = -1;
+	private JointSpring spring, backup;
+	private float maxRPM = 2900f;
 	public Skidmarks skidmarks;
 	public Vector3 worldPose;
 	private float slip;
@@ -21,11 +23,14 @@ public class CarController : MonoBehaviour {
 	public List<GameObject> brakeLights;
 	public List<GameObject> tyres;
 	private bool inAir;
-	public bool iceTyres = false;
+	public bool iceTyres = false, stunEngine = false;
 	public float rpm, BaseDrag;
 	public ParticleSystem smoke;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
+	public float boost = 0;
+	public Bullet.Type modifier = Bullet.Type.NORMAL;
+	private Dictionary<Bullet.Type,System.Action> actionDict;
 
 
 	public void Start(){
@@ -36,6 +41,38 @@ public class CarController : MonoBehaviour {
 
 		this.rearBaseForward = axleInfos [0].leftWheel.forwardFriction;
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
+		this.backup = axleInfos [0].leftWheel.suspensionSpring;
+
+
+
+		actionDict = new Dictionary<Bullet.Type,System.Action>(){
+			{Bullet.Type.NORMAL, () =>{}},
+			{Bullet.Type.HEAVY, () =>{}},
+			{Bullet.Type.ICE, ActivateIceTyres},
+			{Bullet.Type.ENGINE_STUN, ActivateEngineStun},
+		};
+	}
+		
+	public void ActivateModifier(Bullet.Type type){
+		actionDict [type] ();
+	}
+
+	private void ActivateEngineStun(){
+		stunEngine = true;
+		StartCoroutine (deactivateEngineStun());
+	}
+	private IEnumerator deactivateEngineStun(){
+		yield return new WaitForSeconds (10f);
+		stunEngine = false;
+	}
+
+	private void ActivateIceTyres(){
+		iceTyres = true;
+		StartCoroutine (deactivateIceTyres());
+	}
+	private IEnumerator deactivateIceTyres(){
+		yield return new WaitForSeconds (10f);
+		iceTyres = false;
 	}
 
 	private float GetSteering(){
@@ -64,7 +101,10 @@ public class CarController : MonoBehaviour {
 		float forwards = GetPower ();
 		float steeringInput = GetSteering ();
 		inAir = !Physics.Raycast (this.transform.position, -this.transform.up, 1f);
-		float motor = maxMotorTorque * forwards;
+		float motor = (maxMotorTorque + boost) * forwards;
+		if (stunEngine) motor /= 3;
+
+
 		float steering = maxSteeringAngle * steeringInput;
 
 		handleIceTyres (iceTyres);
@@ -78,6 +118,9 @@ public class CarController : MonoBehaviour {
 				axleInfo.rightWheel.steerAngle = steering;
 			}
 			if (axleInfo.motor) {
+				if (Mathf.Abs(axleInfo.leftWheel.rpm) > maxRPM) {
+					motor = 0;
+				}
 				if (motor > 30) {
 					axleInfo.leftWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.leftWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
 					axleInfo.rightWheel.brakeTorque = (chassis.velocity.magnitude > 0.3 && axleInfo.rightWheel.rpm > 0) ? motor * axleInfo.brakeScale : 0 ;
@@ -111,7 +154,7 @@ public class CarController : MonoBehaviour {
 
 		carAudio.pitch = 2*ratio + 0.3f;
 
-		chassis.drag = ratio * ratio * BaseDrag;
+		chassis.drag = gameObject.GetComponent<Rigidbody>().velocity.magnitude * gameObject.GetComponent<Rigidbody>().velocity.magnitude * BaseDrag;
 
 	}
 
@@ -119,17 +162,17 @@ public class CarController : MonoBehaviour {
 		if (iceTyres) {
 			foreach (AxleInfo axleInfo in axleInfos) {
 				WheelFrictionCurve curve = axleInfo.leftWheel.forwardFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.leftWheel.forwardFriction = curve;
 				curve = axleInfo.rightWheel.forwardFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.rightWheel.forwardFriction = curve;
 
 				curve = axleInfo.leftWheel.sidewaysFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.leftWheel.sidewaysFriction = curve;
 				curve = axleInfo.rightWheel.sidewaysFriction;
-				curve.stiffness = 0.5f;
+				curve.stiffness = 1f;
 				axleInfo.rightWheel.sidewaysFriction = curve;
 			}
 
