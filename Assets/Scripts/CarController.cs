@@ -28,7 +28,7 @@ public class CarController : MonoBehaviour {
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
 	public float boost = 0;
-	public Bullet.Type modifier = Bullet.Type.NORMAL;
+
 	private Dictionary<Bullet.Type,System.Action> actionDict;
 
 
@@ -41,8 +41,6 @@ public class CarController : MonoBehaviour {
 		this.rearBaseForward = axleInfos [0].leftWheel.forwardFriction;
 		this.rearBaseSide = axleInfos [0].leftWheel.sidewaysFriction;
 		this.backup = axleInfos [0].leftWheel.suspensionSpring;
-
-
 
 		actionDict = new Dictionary<Bullet.Type,System.Action>(){
 			{Bullet.Type.NORMAL, () =>{}},

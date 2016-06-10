@@ -9,22 +9,23 @@ public class TrackManager : MonoBehaviour {
 	private static float RESET_SEPARATION_DISTANCE = 2f;
 
 	public float RaceCountdownTime;
-
 	public List<GameObject> checkpoints = new List<GameObject>();
-
 	public Player player1, player2;
 
 	private int[] nextCheckPoint = { 0, 0 };
     private int[] round = {0, 0};
-	public int[] rank = { 0, 0 };
 
-	public float trackLength = 0.0f;
-	public float[] distanceToFinish = { 0f, 0f };
-	public float[] roundTime = { 0f, 0f };
-	public float[] startTime = { 0f, 0f };
+	private float trackLength = 0.0f;
+	private float[] distanceToFinish = { 0f, 0f };
+	private float[] roundTime = { 0f, 0f };
+	private float[] startTime = { 0f, 0f };
 
 	private float raceStartTime;
 	private bool frozen = true;
+
+	public bool showDebugInfo = false;
+
+	private Texture2D bg;
 
 	void Start () {
         // Teleport to start
@@ -34,6 +35,10 @@ public class TrackManager : MonoBehaviour {
 		// Freeze player's cars at beginning
 		player1.Freeze ();
 		player2.Freeze ();
+
+		bg = new Texture2D (1, 1);
+		bg.SetPixel (0, 0, new Color(0.8f, 0.8f, 0.8f, 0.8f));
+		bg.Apply ();
 
 		// Compute track length
 		for (var i = 0; i < checkpoints.Count - 1; i++) {
@@ -63,25 +68,24 @@ public class TrackManager : MonoBehaviour {
 		// Calculate Player Rank (num rounds + distance to finish)
 		distanceToFinish[0] = (player1.transform.position - checkpoints[nextCheckPoint[0]].transform.position).magnitude;
 		distanceToFinish[1] = (player2.transform.position - checkpoints[nextCheckPoint[1]].transform.position).magnitude;
+	
+		var nextPseudoCp = new int[2];
+		nextPseudoCp [0] = nextCheckPoint [0] == 0 ? checkpoints.Count : nextCheckPoint [0];
+		nextPseudoCp [1] = nextCheckPoint [1] == 0 ? checkpoints.Count : nextCheckPoint [1];
 
-		for (var i = nextCheckPoint [0]; i < checkpoints.Count; i++)
-			distanceToFinish [0] += (checkpoints [i].transform.position - checkpoints [(i + 1) % checkpoints.Count].transform.position).magnitude;
-		for (var i = nextCheckPoint [1]; i < checkpoints.Count; i++)
-			distanceToFinish [1] += (checkpoints [i].transform.position - checkpoints [(i + 1) % checkpoints.Count].transform.position).magnitude;
-
-		var score = new int[2] { round [0] * 10, round [1] * 10 };
+		var score = new int[2] { round [0] * 1000 + nextPseudoCp[0] * 10, round [1] * 1000 + nextPseudoCp[1] * 10 };
 		score [0] += distanceToFinish [0] < distanceToFinish [1] ? 1 : 0;
 		score [1] += distanceToFinish [1] < distanceToFinish [0] ? 1 : 0;
 
 		if (score [0] > score [1]) {
-			rank [0] = 1;
-			rank [1] = 2;
-			player2.GetComponent<CarController> ().boost = 100;
+			player1.Rank = 1;
+			player2.Rank = 2;
 			player1.GetComponent<CarController> ().boost = 0;
+			player2.GetComponent<CarController> ().boost = 100;
 		}
 		else{
-			rank [0] = 2;
-			rank [1] = 1;
+			player1.Rank = 2;
+			player2.Rank = 1;
 			player1.GetComponent<CarController> ().boost = 100;
 			player2.GetComponent<CarController> ().boost = 0;
 		}
@@ -89,17 +93,44 @@ public class TrackManager : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		GUI.Label(new Rect(0, 0, 600, 20), String.Format("Player 0: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
-			nextCheckPoint[0], round[0], rank[0], roundTime[0], Time.time - startTime[0]));
-		GUI.Label(new Rect(0, 20, 600, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
-			nextCheckPoint[1], round[1], rank[1], roundTime[1], Time.time - startTime[1]));
+		// Draw debug info if desired
+		if (showDebugInfo) {
+			GUI.Label(new Rect(0, 0, 600, 20), String.Format("Player 0: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
+				nextCheckPoint[0], round[0], player1.Rank, roundTime[0], Time.time - startTime[0]));
+			GUI.Label(new Rect(0, 20, 600, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
+				nextCheckPoint[1], round[1], player2.Rank, roundTime[1], Time.time - startTime[1]));
+		}
 
+		// Draw Race Delay Countdown
 		if (frozen) {
 			var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
 			var label = String.Format ("Starting in {0:0.0}", (RaceCountdownTime - (Time.time - raceStartTime)));
+
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+
 			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
 		}
+
+		// Draw Position of players
+		DrawPos(player1);
+		DrawPos(player2);
     }
+
+	private void DrawPos(Player p) {
+		var cam = p.Cam;
+		var camRect = cam.pixelRect; // origin is bottom left
+
+		var upLeft = camRect.position + new Vector2(0f, cam.pixelHeight);
+		upLeft.y = Screen.height - upLeft.y;
+
+		var drawRect = new Rect (upLeft + new Vector2(5f, 5f), new Vector2 (80f, 40f));
+		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+
+		GUI.Box (drawRect, "");
+		var label = p.Rank == 1 ? "1st" : "2nd";
+		GUI.Label (drawRect, label, style);
+	}
 
 	public void NotifyCheckpoint(Player player, int checkpoint) {
 		int playerId = player.playerId;
@@ -121,7 +152,7 @@ public class TrackManager : MonoBehaviour {
 
 	private void ResetPlayer (Player player, float offset) {
 		int previousCP = nextCheckPoint[player.playerId] - 1;
-	    if (previousCP < 0) previousCP = 0;
+		if (previousCP < 0) previousCP = checkpoints.Count - 1;
 
         // Reset Position
         AlignAtCheckPoint(previousCP, player, offset);
@@ -134,7 +165,7 @@ public class TrackManager : MonoBehaviour {
         var cp = checkpoints[checkpoint];
 		var go = player.gameObject;
 
-		go.transform.position = cp.transform.position + cp.transform.TransformDirection(offset, RESET_HEIGHT_ABOVE_TRACK, -4f);
+		go.transform.position = cp.transform.position + cp.transform.TransformDirection(offset, RESET_HEIGHT_ABOVE_TRACK, 4f);
 		go.transform.rotation = cp.transform.localRotation;
     }
 }
