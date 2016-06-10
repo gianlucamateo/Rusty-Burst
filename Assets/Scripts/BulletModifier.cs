@@ -14,11 +14,10 @@ public class BulletModifier : MonoBehaviour {
 	
 	}
 
-
 	void OnTriggerEnter(Collider other){
-		CarController carCtrl = other.gameObject.GetComponentInParent<CarController> ();
-		if(carCtrl != null)
-			carCtrl.modifier = this.modifier;
+		var player = other.gameObject.GetComponentInParent<Player> ();
+		if (player != null)
+			player.ActiveModifier = this.modifier;
 	}
 
 }

@@ -12,6 +12,10 @@ public class Player : MonoBehaviour {
 	public bool InputReset = false;
 
 	public CarController Car;
+	public Camera Cam;
+
+	public int Rank;
+	public Bullet.Type ActiveModifier = Bullet.Type.NORMAL;
 
 	private bool frozen = false;
 

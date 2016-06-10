@@ -74,7 +74,7 @@ public class MeshGenerator : MonoBehaviour
             t += dt;
         }
 
-        Debug.Log(vertices.Count);
+        // Debug.Log(vertices.Count);
 
         // Close path
         outline.transform.rotation = baseRot;
