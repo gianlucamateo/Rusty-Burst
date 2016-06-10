@@ -48,3 +48,4 @@ bin/
 
 Assembly-CSharp*.csproj
 obj/
+*.mdb
