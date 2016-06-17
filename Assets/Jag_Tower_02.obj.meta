@@ -10,20 +10,25 @@ ModelImporter:
     100004: JagTower2_MeshPart0
     100006: JagTower2_MeshPart1
     100008: JagTower2_MeshPart2
+    100010: default
     400000: //RootNode
     400002: JagTower2
     400004: JagTower2_MeshPart0
     400006: JagTower2_MeshPart1
     400008: JagTower2_MeshPart2
+    400010: default
     2300000: JagTower2_MeshPart0
     2300002: JagTower2_MeshPart1
     2300004: JagTower2_MeshPart2
+    2300006: default
     3300000: JagTower2_MeshPart0
     3300002: JagTower2_MeshPart1
     3300004: JagTower2_MeshPart2
+    3300006: default
     4300000: JagTower2_MeshPart0
     4300002: JagTower2_MeshPart1
     4300004: JagTower2_MeshPart2
+    4300006: default
   materials:
     importMaterials: 0
     materialName: 0
@@ -65,7 +70,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0

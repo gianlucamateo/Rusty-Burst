@@ -7,11 +7,16 @@ ModelImporter:
   fileIDToRecycleName:
     100000: _1
     100002: //RootNode
+    100004: default
     400000: _1
     400002: //RootNode
+    400004: default
     2300000: _1
+    2300002: default
     3300000: _1
+    3300002: default
     4300000: _1
+    4300002: default
   materials:
     importMaterials: 1
     materialName: 0
@@ -53,7 +58,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0

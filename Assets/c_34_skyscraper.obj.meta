@@ -13,6 +13,7 @@ ModelImporter:
     100010: Main_structure
     100012: Reflective_panels
     100014: Windows
+    100016: default
     400000: //RootNode
     400002: Detail
     400004: Detail_MeshPart0
@@ -21,24 +22,28 @@ ModelImporter:
     400010: Main_structure
     400012: Reflective_panels
     400014: Windows
+    400016: default
     2300000: Detail_MeshPart0
     2300002: Detail_MeshPart1
     2300004: Detail_MeshPart2
     2300006: Main_structure
     2300008: Reflective_panels
     2300010: Windows
+    2300012: default
     3300000: Detail_MeshPart0
     3300002: Detail_MeshPart1
     3300004: Detail_MeshPart2
     3300006: Main_structure
     3300008: Reflective_panels
     3300010: Windows
+    3300012: default
     4300000: Detail_MeshPart0
     4300002: Detail_MeshPart1
     4300004: Detail_MeshPart2
     4300006: Main_structure
     4300008: Reflective_panels
     4300010: Windows
+    4300012: default
   materials:
     importMaterials: 1
     materialName: 0
@@ -80,7 +85,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
   importAnimation: 1
   copyAvatar: 0
