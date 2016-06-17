@@ -27,7 +27,7 @@ public class CarController : MonoBehaviour {
 	public ParticleSystem smoke;
 	private Color tyreBaseColor;
 	private WheelFrictionCurve frontBaseSide,frontBaseForward, rearBaseSide, rearBaseForward;
-	public float boost = 0;
+	public float dragScale = 1.0f;
 
 	private Dictionary<Bullet.Type,System.Action> actionDict;
 
@@ -93,7 +93,7 @@ public class CarController : MonoBehaviour {
 		float forwards = GetPower ();
 		float steeringInput = GetSteering ();
 		inAir = !Physics.Raycast (this.transform.position, -this.transform.up, 1f);
-		float motor = (maxMotorTorque + boost) * forwards;
+		float motor = (maxMotorTorque + dragScale) * forwards;
 		if (stunEngine) motor /= 3;
 
 
@@ -146,7 +146,7 @@ public class CarController : MonoBehaviour {
 
 		carAudio.pitch = 2*ratio + 0.3f;
 
-		chassis.drag = gameObject.GetComponent<Rigidbody>().velocity.magnitude * gameObject.GetComponent<Rigidbody>().velocity.magnitude * BaseDrag;
+		chassis.drag = gameObject.GetComponent<Rigidbody>().velocity.magnitude * gameObject.GetComponent<Rigidbody>().velocity.magnitude * BaseDrag * dragScale;
 
 	}
 
