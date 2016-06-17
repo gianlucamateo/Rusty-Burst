@@ -38,9 +38,12 @@ public class StartMenu : MonoBehaviour {
 	}
 
 	public void OnPlay1(){
-		SceneManager.LoadScene("BasicScene");
+		SceneManager.LoadScene("Track1");
 	}
 
+	public void OnPlay2(){
+		SceneManager.LoadScene("Track2");
+	}
 	public void OnQuitConfirm(){
 		Application.Quit ();
 	}
