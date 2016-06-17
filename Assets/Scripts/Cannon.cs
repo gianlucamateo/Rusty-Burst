@@ -11,6 +11,7 @@ public class Cannon : MonoBehaviour {
 	public KeyCode up, down, left, right, fireKey;
 	public Texture2D reticle;
 	public Texture2D ice, fat, engine, empty;
+	public Texture2D targetFrame, targetAq, targetFill;
 	public Camera carCam;
 	public Vector3 basePos, posOnScreen, iconPosOnScreen;
 	public CarController carCtrl;
@@ -25,6 +26,8 @@ public class Cannon : MonoBehaviour {
 	private bool fire = true;
 
 	static float RETICLE_SIZE = 40f;
+	static float TARGET_WIDTH = 95f;
+	static float TARGET_HEIGHT = 20f;
 
 	// Use this for initialization
 	void Start () {
@@ -39,6 +42,15 @@ public class Cannon : MonoBehaviour {
 
 		empty = new Texture2D (1024,1024);
 		empty.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/empty.png"));
+
+		targetFrame = new Texture2D (1024,1024);
+		targetFrame.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/frame.png"));
+
+		targetAq = new Texture2D (1024,1024);
+		targetAq.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/target_acquired.png"));
+
+		targetFill = new Texture2D (1024,1024);
+		targetFill.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/target_fill.png"));
 
 		imgDict = new Dictionary<Bullet.Type, Texture2D>(){
 			{Bullet.Type.NORMAL, empty},
@@ -141,6 +153,13 @@ public class Cannon : MonoBehaviour {
 		}
 
 		GUI.DrawTexture (new Rect (posOnScreen.x, Screen.height - posOnScreen.y, RETICLE_SIZE, RETICLE_SIZE), reticle);
+
+		var lockIndicatorPos = new Vector2(posOnScreen.x,posOnScreen.y) + new Vector2 (0, -50);
+
+		GUI.DrawTexture (new Rect (lockIndicatorPos.x -TARGET_WIDTH/2 + RETICLE_SIZE/2, Screen.height - lockIndicatorPos.y, TARGET_WIDTH * (Mathf.Min(lockPercentage,100)/100), TARGET_HEIGHT),targetFill);
+		if (lockPercentage >= 100f) {
+			GUI.Label (new Rect (lockIndicatorPos.x -TARGET_WIDTH/2 + RETICLE_SIZE/2, Screen.height - lockIndicatorPos.y, TARGET_WIDTH, TARGET_HEIGHT),"TARGET LOCK");
+		}
 	}
 
 	IEnumerator Fire(){
@@ -157,6 +176,7 @@ public class Cannon : MonoBehaviour {
 		projectileRB.useGravity = false;
 		if (lockPercentage > 100f) {
 			projectile.GetComponent<Bullet> ().target = lockObj;
+			lockPercentage = 0f;
 		}
 		var globalDir = transform.TransformVector(Vector3.right);
 
