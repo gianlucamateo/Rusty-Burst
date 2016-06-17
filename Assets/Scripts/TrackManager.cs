@@ -80,14 +80,14 @@ public class TrackManager : MonoBehaviour {
 		if (score [0] > score [1]) {
 			player1.Rank = 1;
 			player2.Rank = 2;
-			player1.GetComponent<CarController> ().boost = 0;
-			player2.GetComponent<CarController> ().boost = 100;
+			player1.GetComponent<CarController> ().dragScale = 1.2f;
+			player2.GetComponent<CarController> ().dragScale = 0.8f;
 		}
 		else{
 			player1.Rank = 2;
 			player2.Rank = 1;
-			player1.GetComponent<CarController> ().boost = 100;
-			player2.GetComponent<CarController> ().boost = 0;
+			player1.GetComponent<CarController> ().dragScale = 0.8f;
+			player2.GetComponent<CarController> ().dragScale = 1.2f;
 		}
 
 	}
