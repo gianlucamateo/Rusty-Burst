@@ -46,3 +46,6 @@ Library/
 Temp/
 bin/
 
+Assembly-CSharp*.csproj
+obj/
+*.mdb

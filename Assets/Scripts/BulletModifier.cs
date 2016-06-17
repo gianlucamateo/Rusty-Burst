@@ -14,13 +14,12 @@ public class BulletModifier : MonoBehaviour {
 	
 	}
 
-
 	void OnTriggerEnter(Collider other){
 		if (other.isTrigger || !active)
 			return;
-		CarController carCtrl = other.gameObject.GetComponentInParent<CarController> ();
-		if (carCtrl != null) {
-			carCtrl.modifier = this.modifier;
+		var player = other.gameObject.GetComponentInParent<Player> ();
+		if (player != null) {
+			player.ActiveModifier = this.modifier;
 			active = false;
 			gameObject.GetComponent<Renderer> ().enabled = false;
 			StartCoroutine (reactivate ());
