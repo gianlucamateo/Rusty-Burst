@@ -46,3 +46,4 @@ Library/
 Temp/
 bin/
 
+Assembly-CSharp*.csproj
