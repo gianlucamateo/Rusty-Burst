@@ -129,9 +129,9 @@ public class Cannon : MonoBehaviour {
 		var upRight = camRect.position + new Vector2(cam.pixelWidth, cam.pixelHeight);
 		upRight.y = Screen.height - upRight.y;
 
-		var drawRect = new Rect (upRight + new Vector2(-5f - 40f, 5f), new Vector2 (40f, 40f));
-		var texRect = new Rect(drawRect.position + new Vector2(5f, 5f), new Vector2(30f, 30f));
-		var textRect = new Rect (drawRect.position + new Vector2 (0f, 40f), new Vector2 (40f, 40f));
+		var drawRect = new Rect (upRight + new Vector2(-5f - 80f, 5f), new Vector2 (80f, 80f));
+		var texRect = new Rect(drawRect.position + new Vector2(5f, 5f), new Vector2(70f, 70f));
+		var textRect = new Rect (drawRect.position + new Vector2 (0f, 80f), new Vector2 (80f, 80f));
 
 		GUI.Box (drawRect, "");
 		GUI.DrawTexture (texRect, texture);
