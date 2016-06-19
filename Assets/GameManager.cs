@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 using System;
 
 public class GameManager : MonoBehaviour {
@@ -44,15 +45,20 @@ public class GameManager : MonoBehaviour {
 
 		if (timeSinceStart > IntroTime + PrepareTime && state == GameState.BeforeStart) {
 			state = GameState.Racing;
-			raceStartTime = Time.time - timeSinceStart;
+			raceStartTime = Time.time;
 			trackManager.StartRace ();
+		}
+
+		// Show start menu when outro is over
+		if (state == GameState.Finished && (Time.time - raceFinishTime) > OutroTime) {
+			SceneManager.LoadScene ("Startmenu");
 		}
 	}
 
 	public void NotifyWinner(Player p) {
 		this.winner = p;
 		this.state = GameState.Finished;
-		raceFinishTime = Time.time - raceStartTime;
+		raceFinishTime = Time.time;
 	}
 
 	void OnGUI() {
