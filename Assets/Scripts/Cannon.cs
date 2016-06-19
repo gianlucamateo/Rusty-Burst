@@ -111,8 +111,12 @@ public class Cannon : MonoBehaviour {
 	}
 
 	void OnGUI() {
-		DrawReticle();
-		DrawModifier();
+		var gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+
+		if (gameManager.state == GameManager.GameState.Racing) {
+			DrawReticle();
+			DrawModifier();
+		}
 	}
 
 	private void DrawModifier() {

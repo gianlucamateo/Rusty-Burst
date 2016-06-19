@@ -1,27 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour {
 
 	#region SetFromInspector
 	public TrackManager trackManager;
-	public float IntroTime = 10f;
+	public float IntroTime = 5f;
+	public float PrepareTime = 5f;
 	public float OutroTime = 5f;
+	public int RoundsToFinish = 5;
 	#endregion
 
 	public CameraCoordinator camCoordinator;
 
-	public enum GameState { BeforeStart, Racing, AfterFinish }
+	public enum GameState { Intro, BeforeStart, Racing, Finished }
 
 	public Player player1, player2;
 	public GameState state = GameState.BeforeStart;
 
-	private float startTime, raceStartTime, raceFinishTime;
+	private float startTime, raceStartTime, raceFinishTime, timeSinceStart, timeSinceRaceStart;
 	public Player winner = null;
 
 	void Awake() {
 		camCoordinator = GetComponent<CameraCoordinator> ();
-		camCoordinator.cameraState = CameraCoordinator.CameraState.BeforeStart;
+
+		state = GameState.Intro;
 	}
 
 	// Use this for initialization
@@ -31,27 +35,55 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		var elapsed = Time.time - startTime;
+		timeSinceStart = Time.time - startTime;
 
-		if (elapsed < IntroTime) {
+		if (timeSinceStart > IntroTime && state == GameState.Intro)
 			state = GameState.BeforeStart;
 
-			if (elapsed > IntroTime / 2f)
-				camCoordinator.cameraState = CameraCoordinator.CameraState.Racing;
-		} else {
-			if (winner == null) {
-				state = GameState.Racing;
-				camCoordinator.cameraState = CameraCoordinator.CameraState.Racing;
-			} else {
-				state = GameState.AfterFinish;
-				camCoordinator.cameraState = CameraCoordinator.CameraState.AfterFinish;
-				raceFinishTime = Time.time;
-			}
+		if (timeSinceStart > IntroTime + PrepareTime && state == GameState.BeforeStart) {
+			state = GameState.Racing;
+			raceStartTime = Time.time - timeSinceStart;
+			trackManager.StartRace ();
 		}
-			
 	}
 
-	void NotifyWinner(Player p) {
+	public void NotifyWinner(Player p) {
 		this.winner = p;
+		this.state = GameState.Finished;
+		raceFinishTime = Time.time - raceStartTime;
+	}
+
+	void OnGUI() {
+		// Draw Race Delay Countdown
+		if (state == GameState.BeforeStart) {
+			var style = new GUIStyle (GUI.skin.GetStyle ("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
+			var label = String.Format ("Starting in {0:0.0}", (PrepareTime - timeSinceStart + IntroTime));
+
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+
+			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
+		}
+
+		// Draw Position of players
+		if (state == GameState.Racing) {
+			DrawPos(player1);
+			DrawPos(player2);
+		}
+	}
+
+	private void DrawPos(Player p) {
+		var cam = p.Cam;
+		var camRect = cam.pixelRect; // origin is bottom left
+
+		var upLeft = camRect.position + new Vector2(0f, cam.pixelHeight);
+		upLeft.y = Screen.height - upLeft.y;
+
+		var drawRect = new Rect (upLeft + new Vector2(5f, 5f), new Vector2 (80f, 40f));
+		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+
+		GUI.Box (drawRect, "");
+		var label = p.Rank == 1 ? "1st" : "2nd";
+		GUI.Label (drawRect, label, style);
 	}
 }

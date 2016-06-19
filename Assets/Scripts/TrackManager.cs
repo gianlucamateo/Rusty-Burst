@@ -20,7 +20,7 @@ public class TrackManager : MonoBehaviour {
 	private float[] startTime = { 0f, 0f };
 
 	private float raceStartTime;
-	private bool frozen = true;
+	private bool raceStarted = false;
 
 	public bool showDebugInfo = false;
 
@@ -43,20 +43,25 @@ public class TrackManager : MonoBehaviour {
 		for (var i = 0; i < checkpoints.Count - 1; i++) {
 			trackLength += (checkpoints [i + 1].transform.position - checkpoints [i].transform.position).magnitude;
 		}
+
+	}
+
+	public void StartRace() {
+		Debug.LogFormat ("Unfreezing Players");
+		player1.UnFreeze ();
+		player2.UnFreeze ();
+
 		// Set timer times
 		startTime[0] = Time.time;
 		startTime[1] = Time.time;
 
 		raceStartTime = Time.time;
+		raceStarted = true;
 	}
 
 	void Update () {
-		if (Time.time - raceStartTime > RaceCountdownTime && frozen) {
-			Debug.LogFormat ("Unfreezing Players");
-			player1.UnFreeze ();
-			player2.UnFreeze ();
-			frozen = false;
-		}
+		if (!raceStarted)
+			return;
 
 		if (player1.InputReset)
 	        ResetPlayer(player1, RESET_SEPARATION_DISTANCE);
@@ -82,7 +87,7 @@ public class TrackManager : MonoBehaviour {
 			player1.GetComponent<CarController> ().dragScale = 1.2f;
 			player2.GetComponent<CarController> ().dragScale = 0.8f;
 		}
-		else{
+		else {
 			player1.Rank = 2;
 			player2.Rank = 1;
 			player1.GetComponent<CarController> ().dragScale = 0.8f;
@@ -99,38 +104,8 @@ public class TrackManager : MonoBehaviour {
 			GUI.Label(new Rect(0, 20, 600, 20), String.Format("Player 1: Next CP: {0}, Round: {1}, Rank: {2}, last Lap: {3:0.00}s, Lap: {4:0.00}s",
 				nextCheckPoint[1], round[1], player2.Rank, roundTime[1], Time.time - startTime[1]));
 		}
-
-		// Draw Race Delay Countdown
-		if (frozen) {
-			var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
-			var label = String.Format ("Starting in {0:0.0}", (RaceCountdownTime - (Time.time - raceStartTime)));
-
-			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
-			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
-
-			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
-		}
-
-		// Draw Position of players
-		DrawPos(player1);
-		DrawPos(player2);
     }
-
-	private void DrawPos(Player p) {
-		var cam = p.Cam;
-		var camRect = cam.pixelRect; // origin is bottom left
-
-		var upLeft = camRect.position + new Vector2(0f, cam.pixelHeight);
-		upLeft.y = Screen.height - upLeft.y;
-
-		var drawRect = new Rect (upLeft + new Vector2(5f, 5f), new Vector2 (80f, 40f));
-		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
-
-		GUI.Box (drawRect, "");
-		var label = p.Rank == 1 ? "1st" : "2nd";
-		GUI.Label (drawRect, label, style);
-	}
-
+		
 	public void NotifyCheckpoint(Player player, int checkpoint) {
 		int playerId = player.playerId;
 
@@ -146,6 +121,11 @@ public class TrackManager : MonoBehaviour {
 				roundTime [playerId] = Time.time - startTime[playerId];
 				startTime [playerId] = Time.time;
             }
+
+			// Check for Race Finish
+			var gm = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+			if (round [playerId] == gm.RoundsToFinish)
+				gm.NotifyWinner (player);
 	    }
 	}
 
