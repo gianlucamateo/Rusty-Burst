@@ -31,7 +31,7 @@ public class CameraCoordinator : MonoBehaviour {
 		// Animate camera
 		if (gm.state == GameManager.GameState.Intro) {
 			var carCenter = (car1.transform.position + car2.transform.position) / 2f;
-			cam.transform.position = carCenter + new Vector3 (10f, 10f, 10f);
+			cam.transform.position = carCenter + new Vector3 (8f, 8f, 8f);
 			cam.transform.LookAt (carCenter);
 			cam.transform.RotateAround (carCenter, Vector3.up, 10f * Time.time);
 		} else if (gm.state == GameManager.GameState.Finished) {
