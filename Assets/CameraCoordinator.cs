@@ -2,10 +2,10 @@
 using System.Collections;
 
 public class CameraCoordinator : MonoBehaviour {
-	public CarController car1, car2;
+	private CarController car1, car2;
 
-	public Camera cam;
-	public GameManager gm;
+	private Camera cam;
+	private GameManager gm;
 
 	public float camHeight = 10.0f;
 

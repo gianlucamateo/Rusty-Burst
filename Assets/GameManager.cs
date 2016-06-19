@@ -4,19 +4,21 @@ using System;
 
 public class GameManager : MonoBehaviour {
 
+	public enum GameState { Intro, BeforeStart, Racing, Finished }
+
 	#region SetFromInspector
+	public Player player1, player2;
 	public TrackManager trackManager;
+
 	public float IntroTime = 5f;
 	public float PrepareTime = 5f;
 	public float OutroTime = 5f;
+
 	public int RoundsToFinish = 5;
 	#endregion
 
-	public CameraCoordinator camCoordinator;
+	private CameraCoordinator camCoordinator;
 
-	public enum GameState { Intro, BeforeStart, Racing, Finished }
-
-	public Player player1, player2;
 	public GameState state = GameState.BeforeStart;
 
 	private float startTime, raceStartTime, raceFinishTime, timeSinceStart, timeSinceRaceStart;
