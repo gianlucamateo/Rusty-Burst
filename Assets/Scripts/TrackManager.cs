@@ -8,7 +8,6 @@ public class TrackManager : MonoBehaviour {
 	private static float RESET_HEIGHT_ABOVE_TRACK = 2f;
 	private static float RESET_SEPARATION_DISTANCE = 2f;
 
-	public float RaceCountdownTime;
 	public List<GameObject> checkpoints = new List<GameObject>();
 	public Player player1, player2;
 
@@ -168,4 +167,9 @@ public class TrackManager : MonoBehaviour {
 		go.transform.position = cp.transform.position + cp.transform.TransformDirection(offset, RESET_HEIGHT_ABOVE_TRACK, 4f);
 		go.transform.rotation = cp.transform.localRotation;
     }
+
+	public Player GetCurrentLeader() {
+		return player1.Rank > player2.Rank ? player1 : player2;
+	}
+
 }

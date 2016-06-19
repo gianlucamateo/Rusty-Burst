@@ -19,12 +19,14 @@ public class Player : MonoBehaviour {
 
 	private bool frozen = false;
 
+	void Awake() {
+		Car = GetComponent<CarController> ();
+	}
+
 	// Use this for initialization
 	void Start () {
 		PowerAxis = "Joy" + (playerId + 1) + "Power";
 		SteeringAxis = "Joy" + (playerId + 1) + "Steering";
-
-		Car = GetComponent<CarController> ();
 	}
 	
 	// Update is called once per frame
