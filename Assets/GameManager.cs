@@ -67,14 +67,17 @@ public class GameManager : MonoBehaviour {
 		GUI.skin = skin;
 
 		// Draw Race Delay Countdown
-		if (state == GameState.BeforeStart && timeSinceStart > startTime + IntroTime + 2f) {
+		if (state == GameState.BeforeStart) {
 			var style = new GUIStyle (GUI.skin.GetStyle ("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
-			var label = String.Format ("Starting in {0:0.0}", (PrepareTime - timeSinceStart + IntroTime));
+			var startingInTime = PrepareTime - timeSinceStart + IntroTime;
+			var label = String.Format ("Starting in {0}", (int)(startingInTime + 1f));
 
-			var drawRect = new Rect (Screen.width / 2 - 200, Screen.height / 2 - 50, 400, 100);
-			GUI.Box (drawRect, "");
+			if (startingInTime < (PrepareTime - 2f)) {
+				var drawRect = new Rect (Screen.width / 2 - 200, Screen.height / 2 - 50, 400, 100);
+				GUI.Box (drawRect, "");
 
-			GUI.Label (drawRect, label, style);
+				GUI.Label (drawRect, label, style);
+			}
 		}
 
 		// Draw Position of players
