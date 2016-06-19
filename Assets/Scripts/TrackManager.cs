@@ -124,7 +124,7 @@ public class TrackManager : MonoBehaviour {
 
 			// Check for Race Finish
 			var gm = GameObject.Find ("GameManager").GetComponent<GameManager> ();
-			if (round [playerId] == gm.RoundsToFinish)
+			if (round [playerId] == gm.RoundsToFinish + 1)
 				gm.NotifyWinner (player);
 	    }
 	}

@@ -70,6 +70,16 @@ public class GameManager : MonoBehaviour {
 			DrawPos(player1);
 			DrawPos(player2);
 		}
+
+		if (state == GameState.Finished) {
+			var style = new GUIStyle (GUI.skin.GetStyle ("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
+			var label = String.Format ("{0} wins!", winner.GetName());
+
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+
+			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
+		}
 	}
 
 	private void DrawPos(Player p) {

@@ -58,4 +58,8 @@ public class Player : MonoBehaviour {
 	private float shift(float input) {
 		return (input + 1f) / 2f;
 	}
+
+	public string GetName() {
+		return "Player " + (playerId + 1).ToString ();
+	}
 }

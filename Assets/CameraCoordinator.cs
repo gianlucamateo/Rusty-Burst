@@ -45,7 +45,7 @@ public class CameraCoordinator : MonoBehaviour {
 			var targetPos = winner.Car.transform.position;
 			cam.transform.position = targetPos + new Vector3 (10f, 10f, 10f);
 			cam.transform.LookAt (targetPos);
-			cam.transform.RotateAround (targetPos, Vector3.up, 1.0f);
+			cam.transform.RotateAround (targetPos, Vector3.up, 10f * Time.time);
 		}
 	}
 }
