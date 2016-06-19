@@ -11,8 +11,8 @@ public class Cannon : MonoBehaviour {
 	public KeyCode up, down, left, right, fireKey;
 	public Texture2D reticle;
 	public Texture2D ice, fat, engine, empty;
+	public Texture2D targetFrame, targetAq, targetFill;
 	public Camera carCam;
-	public Rect carVP;
 	public Vector3 basePos, posOnScreen, iconPosOnScreen;
 	public CarController carCtrl;
 	public GameObject hitObj;
@@ -21,13 +21,13 @@ public class Cannon : MonoBehaviour {
 	public GameObject lockObj;
 
 	private Dictionary<Bullet.Type,Texture2D> imgDict;
+	private Player player;
 
 	private bool fire = true;
 
 	static float RETICLE_SIZE = 40f;
-
-
-
+	static float TARGET_WIDTH = 95f;
+	static float TARGET_HEIGHT = 20f;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +43,15 @@ public class Cannon : MonoBehaviour {
 		empty = new Texture2D (1024,1024);
 		empty.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/empty.png"));
 
+		targetFrame = new Texture2D (1024,1024);
+		targetFrame.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/frame.png"));
+
+		targetAq = new Texture2D (1024,1024);
+		targetAq.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/target_acquired.png"));
+
+		targetFill = new Texture2D (1024,1024);
+		targetFill.LoadImage (System.IO.File.ReadAllBytes("Assets/textures/target_fill.png"));
+
 		imgDict = new Dictionary<Bullet.Type, Texture2D>(){
 			{Bullet.Type.NORMAL, empty},
 			{Bullet.Type.HEAVY, fat},
@@ -51,6 +60,7 @@ public class Cannon : MonoBehaviour {
 		};
 
 		carCtrl = transform.gameObject.GetComponentInParent<CarController> ();
+		player = GetComponentInParent<Player> ();
 	}
 
 	// Update is called once per frame
@@ -101,6 +111,34 @@ public class Cannon : MonoBehaviour {
 	}
 
 	void OnGUI() {
+		var gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
+
+		if (gameManager.state == GameManager.GameState.Racing) {
+			DrawReticle();
+			DrawModifier();
+		}
+	}
+
+	private void DrawModifier() {
+		var modifier = player.ActiveModifier;
+		var texture = imgDict [modifier];
+
+		var cam = player.Cam;
+		var camRect = cam.pixelRect; // origin is bottom left
+
+		var upRight = camRect.position + new Vector2(cam.pixelWidth, cam.pixelHeight);
+		upRight.y = Screen.height - upRight.y;
+
+		var drawRect = new Rect (upRight + new Vector2(-5f - 80f, 5f), new Vector2 (80f, 80f));
+		var texRect = new Rect(drawRect.position + new Vector2(5f, 5f), new Vector2(70f, 70f));
+		var textRect = new Rect (drawRect.position + new Vector2 (0f, 80f), new Vector2 (80f, 80f));
+
+		GUI.Box (drawRect, "");
+		GUI.DrawTexture (texRect, texture);
+		//GUI.Label (textRect, modifier.ToString());
+	}
+		
+	private void DrawReticle() {
 		RaycastHit rcHit;
 		mask2 = ~(mask | 1<<2);
 		var rayCast = Physics.Raycast(transform.position + 0.2f*transform.up, transform.forward,out rcHit, 1000f, mask2);
@@ -109,8 +147,6 @@ public class Cannon : MonoBehaviour {
 			hitObj = rcHit.collider.gameObject;
 		else
 			hitObj = null;
-
-		carVP = carCam.rect;
 
 		posOnScreen = carCam.WorldToScreenPoint(transform.position + 0.2f*transform.up + 1000f*transform.forward)- new Vector3(RETICLE_SIZE / 2f,-RETICLE_SIZE / 2f,0f);
 
@@ -121,7 +157,13 @@ public class Cannon : MonoBehaviour {
 		}
 
 		GUI.DrawTexture (new Rect (posOnScreen.x, Screen.height - posOnScreen.y, RETICLE_SIZE, RETICLE_SIZE), reticle);
-		GUI.DrawTexture (new Rect(iconPosOnScreen.x,Screen.height - iconPosOnScreen.y,30,30),imgDict[carCtrl.modifier]);
+
+		var lockIndicatorPos = new Vector2(posOnScreen.x,posOnScreen.y) + new Vector2 (0, -50);
+
+		GUI.DrawTexture (new Rect (lockIndicatorPos.x -TARGET_WIDTH/2 + RETICLE_SIZE/2, Screen.height - lockIndicatorPos.y, TARGET_WIDTH * (Mathf.Min(lockPercentage,100)/100), TARGET_HEIGHT),targetFill);
+		if (lockPercentage >= 100f) {
+			GUI.Label (new Rect (lockIndicatorPos.x -TARGET_WIDTH/2 + RETICLE_SIZE/2, Screen.height - lockIndicatorPos.y, TARGET_WIDTH, TARGET_HEIGHT),"TARGET LOCK");
+		}
 	}
 
 	IEnumerator Fire(){
@@ -129,8 +171,8 @@ public class Cannon : MonoBehaviour {
 		Vector3 spawnPos = transform.position + new Vector3 (0.0f, 0.2f, 0.0f);
 		GameObject projectile = Instantiate(projectilePrefab, spawnPos, transform.rotation) as GameObject;
        		 //projectile.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(0, 0, 3000));
-		projectile.GetComponent<Bullet>().modifier = carCtrl.modifier;
-		carCtrl.modifier = Bullet.Type.NORMAL;
+		projectile.GetComponent<Bullet>().modifier = player.ActiveModifier;
+		player.ActiveModifier = Bullet.Type.NORMAL;
 		var projectileRB = projectile.GetComponent<Rigidbody>();
 		projectileRB.velocity = ChassisRigidB.velocity;
 		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
@@ -138,6 +180,7 @@ public class Cannon : MonoBehaviour {
 		projectileRB.useGravity = false;
 		if (lockPercentage > 100f) {
 			projectile.GetComponent<Bullet> ().target = lockObj;
+			lockPercentage = 0f;
 		}
 		var globalDir = transform.TransformVector(Vector3.right);
 

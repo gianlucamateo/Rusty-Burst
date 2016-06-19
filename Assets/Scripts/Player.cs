@@ -12,15 +12,23 @@ public class Player : MonoBehaviour {
 	public bool InputReset = false;
 
 	public CarController Car;
+	public Camera Cam;
+
+	public int Rank;
+	public int Rounds;
+
+	public Bullet.Type ActiveModifier = Bullet.Type.NORMAL;
 
 	private bool frozen = false;
+
+	void Awake() {
+		Car = GetComponent<CarController> ();
+	}
 
 	// Use this for initialization
 	void Start () {
 		PowerAxis = "Joy" + (playerId + 1) + "Power";
 		SteeringAxis = "Joy" + (playerId + 1) + "Steering";
-
-		Car = GetComponent<CarController> ();
 	}
 	
 	// Update is called once per frame
@@ -51,5 +59,9 @@ public class Player : MonoBehaviour {
 
 	private float shift(float input) {
 		return (input + 1f) / 2f;
+	}
+
+	public string GetName() {
+		return "Player " + (playerId + 1).ToString ();
 	}
 }
