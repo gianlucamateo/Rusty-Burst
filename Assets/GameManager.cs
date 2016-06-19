@@ -75,8 +75,10 @@ public class GameManager : MonoBehaviour {
 
 		// Draw Position of players
 		if (state == GameState.Racing) {
-			DrawPos(player1);
-			DrawPos(player2);
+			DrawRank(player1);
+			DrawRank(player2);
+			DrawRounds (player1);
+			DrawRounds (player2);
 		}
 
 		if (state == GameState.Finished) {
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	private void DrawPos(Player p) {
+	private void DrawRank(Player p) {
 		var cam = p.Cam;
 		var camRect = cam.pixelRect; // origin is bottom left
 
@@ -103,5 +105,21 @@ public class GameManager : MonoBehaviour {
 		GUI.Box (drawRect, "");
 		var label = p.Rank == 1 ? "1st" : "2nd";
 		GUI.Label (drawRect, label, style);
+	}
+
+	private void DrawRounds(Player p) {
+		var cam = p.Cam;
+		var camRect = cam.pixelRect; // origin is bottom left
+
+		var upCenter = camRect.position + new Vector2(cam.pixelWidth / 2, cam.pixelHeight);
+		upCenter.y = Screen.height - upCenter.y;
+
+		var drawRect = new Rect (upCenter + new Vector2(5f - 80f / 2, 5f), new Vector2 (80f, 40f));
+		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+
+		GUI.Box (drawRect, "");
+		var label = String.Format ("Lap {0}/{1}", p.Rounds, RoundsToFinish);
+		GUI.Label (drawRect, label, style);
+
 	}
 }

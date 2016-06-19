@@ -117,6 +117,7 @@ public class TrackManager : MonoBehaviour {
             // Check for completed round
             if (nextCheckPoint[playerId] == 1) {
                 round[playerId]++;
+				player.Rounds = round [playerId];
 				distanceToFinish [playerId] = 0.0f;
 				roundTime [playerId] = Time.time - startTime[playerId];
 				startTime [playerId] = Time.time;

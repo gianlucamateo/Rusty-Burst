@@ -15,6 +15,8 @@ public class Player : MonoBehaviour {
 	public Camera Cam;
 
 	public int Rank;
+	public int Rounds;
+
 	public Bullet.Type ActiveModifier = Bullet.Type.NORMAL;
 
 	private bool frozen = false;
