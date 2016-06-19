@@ -12,6 +12,7 @@ public class StartMenu : MonoBehaviour {
 	public Button controls;
 	public Button quit;
 	public Image controlHalo1;
+	public Image controlHalo2;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +22,7 @@ public class StartMenu : MonoBehaviour {
 		quitMenu.enabled = false;
 		showControls.enabled = false;
 		controlHalo1 = controlHalo1.GetComponent<Image> ();
+		controlHalo2 = controlHalo2.GetComponent<Image> ();
 		play1 = play1.GetComponent<Button> ();
 		play2 = play2.GetComponent<Button> ();
 		quit = quit.GetComponent<Button> ();
@@ -77,17 +79,37 @@ public class StartMenu : MonoBehaviour {
 	void Update () {
 	
 		if(showControls.enabled == true){
-			if (Input.GetKey (KeyCode.Return)) {
-				controlHalo1.enabled = true;
+
+//			if (Input.GetAxis ("Joy1Steering")>0.1) {
+//				Debug.Log (Input.GetAxis ("Joy1Steering"));
+//			}
+//
+//			if (Input.GetAxis ("Joy1Steering")!=0) {
+//				Debug.Log ("joy2");
+//			}
+
+			if (System.Math.Abs(Input.GetAxis ("Joy1Steering"))>0.1) {
+				controlHalo1.color = new Color32 (220, 0, 0, 255);
 			} else {
-				controlHalo1.enabled = false;
+				controlHalo1.color = new Color32 (255, 255, 255, 30);
 			}
 
-			if (Input.GetKey (KeyCode.Escape)) {
-				controlHalo1.enabled = true;
+			if (System.Math.Abs(Input.GetAxis ("Joy2Steering"))>0.1) {
+				controlHalo2.color = new Color32 (0, 0, 220, 255);
 			} else {
-//				controlHalo1.enabled = false;
+				controlHalo2.color = new Color32 (255, 255, 255, 30);
 			}
+//			if (Input.GetKey (KeyCode.Return)) {
+//				controlHalo1.color = new Color32 (220, 0, 0, 255);
+//			} else {
+//				controlHalo1.color = new Color32 (255, 255, 255, 30);
+//			}
+//
+//			if (Input.GetKey (KeyCode.Escape)) {
+//				controlHalo2.color = new Color32 (0, 0, 220, 255);
+//			} else {
+//				controlHalo2.color = new Color32 (255, 255, 255, 30);
+//			}
 		}
 	}
 
