@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 	public float OutroTime = 5f;
 
 	public int RoundsToFinish = 5;
+	public GUISkin skin;
 	#endregion
 
 	private CameraCoordinator camCoordinator;
@@ -62,15 +63,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	void OnGUI() {
+		// Set GUI Skin
+		GUI.skin = skin;
+
 		// Draw Race Delay Countdown
-		if (state == GameState.BeforeStart) {
+		if (state == GameState.BeforeStart && timeSinceStart > startTime + IntroTime + 2f) {
 			var style = new GUIStyle (GUI.skin.GetStyle ("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
 			var label = String.Format ("Starting in {0:0.0}", (PrepareTime - timeSinceStart + IntroTime));
 
-			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
-			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
+			var drawRect = new Rect (Screen.width / 2 - 200, Screen.height / 2 - 50, 400, 100);
+			GUI.Box (drawRect, "");
 
-			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
+			GUI.Label (drawRect, label, style);
 		}
 
 		// Draw Position of players
@@ -85,7 +89,6 @@ public class GameManager : MonoBehaviour {
 			var style = new GUIStyle (GUI.skin.GetStyle ("label")) { fontSize = 32, alignment = TextAnchor.MiddleCenter };
 			var label = String.Format ("{0} wins!", winner.GetName());
 
-			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
 			GUI.Box (new Rect (Screen.width / 2 - 150, Screen.height / 2 - 50, 300, 100), "");
 
 			GUI.Label (new Rect (Screen.width/2-100, Screen.height/2-50, 200, 100), label, style);
@@ -115,10 +118,10 @@ public class GameManager : MonoBehaviour {
 		upCenter.y = Screen.height - upCenter.y;
 
 		var drawRect = new Rect (upCenter + new Vector2(5f - 80f / 2, 5f), new Vector2 (80f, 40f));
-		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 18, alignment = TextAnchor.MiddleCenter };
+		var style = new GUIStyle (GUI.skin.GetStyle("label")) { fontSize = 16, alignment = TextAnchor.MiddleCenter };
 
 		GUI.Box (drawRect, "");
-		var label = String.Format ("Lap {0}/{1}", p.Rounds, RoundsToFinish);
+		var label = String.Format ("Lap\n{0}/{1}", p.Rounds, RoundsToFinish);
 		GUI.Label (drawRect, label, style);
 
 	}

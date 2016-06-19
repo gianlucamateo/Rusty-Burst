@@ -135,7 +135,7 @@ public class Cannon : MonoBehaviour {
 
 		GUI.Box (drawRect, "");
 		GUI.DrawTexture (texRect, texture);
-		GUI.Label (textRect, modifier.ToString());
+		//GUI.Label (textRect, modifier.ToString());
 	}
 		
 	private void DrawReticle() {
