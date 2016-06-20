@@ -85,7 +85,7 @@ public class Cannon : MonoBehaviour {
 
 		Debug.DrawRay(transform.position+ 0.25f*transform.up, transform.forward*1000,Color.white);
 		//if (Input.GetButtonDown("Fire1")) {
-		if (Input.GetKey(fireKey) && fire){
+		if ((Input.GetKey(fireKey)||player.InputFire) && fire){
 			StartCoroutine(Fire());
     		}
 
