@@ -176,7 +176,7 @@ public class Cannon : MonoBehaviour {
 		var projectileRB = projectile.GetComponent<Rigidbody>();
 		projectileRB.velocity = ChassisRigidB.velocity;
 		projectileRB.AddRelativeForce(Vector3.forward * 120, ForceMode.Impulse);
-		projectileRB.mass = 50;
+		projectileRB.mass = 1000;
 		projectileRB.useGravity = false;
 		if (lockPercentage > 100f) {
 			projectile.GetComponent<Bullet> ().target = lockObj;
