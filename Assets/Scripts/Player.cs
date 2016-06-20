@@ -9,6 +9,7 @@ public class Player : MonoBehaviour {
 
 	public float InputPower = 0.0f;
 	public float InputSteering = 0.0f;
+	public bool InputFire = false;
 	public bool InputReset = false;
 
 	public CarController Car;
@@ -37,7 +38,8 @@ public class Player : MonoBehaviour {
 			return;
 		
 		InputSteering = Input.GetAxis (SteeringAxis);
-		InputReset = Input.GetKeyDown (playerId == 0 ? KeyCode.R : KeyCode.Period);
+		InputReset = Input.GetButton("Joy" + (playerId + 1) + "ResetWin");
+		InputFire = Input.GetButton ("Joy" + (playerId + 1) + "FireWin");
 
 		if (Application.platform == RuntimePlatform.WindowsPlayer || Application.platform == RuntimePlatform.WindowsEditor)
 			InputPower = Input.GetAxis (PowerAxis + "Win");
